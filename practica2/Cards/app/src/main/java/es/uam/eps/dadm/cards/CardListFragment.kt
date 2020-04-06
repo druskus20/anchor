@@ -58,7 +58,7 @@ class CardListFragment : Fragment() {
                 Toast.makeText(activity, "${card.question} seleccionada", Toast.LENGTH_SHORT).show()
                 activity?.supportFragmentManager
                     ?.beginTransaction()
-                    ?.replace(R.id.fragment_container, CardFragment.newInstance())
+                    ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
                     ?.commitNow()
             }
 
