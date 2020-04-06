@@ -51,8 +51,12 @@ class DeckListFragment : Fragment(){
         val numCardsTextView: TextView = itemView.findViewById(R.id.list_item_deck_numcards)
 
         init {
+            // Click on the deck, replace fragment
             itemView.setOnClickListener {
-                // Toast.makeText(activity, "TEXT seleccionada", Toast.LENGTH_SHORT).show()
+                activity?.supportFragmentManager
+                    ?.beginTransaction()
+                    ?.replace(R.id.fragment_container, CardListFragment.newInstance())
+                    ?.commitNow()
             }
         }
         fun bind(deck: Deck) {

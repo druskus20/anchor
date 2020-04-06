@@ -9,6 +9,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val TAG: String = "MainActivity"
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,42 +28,31 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-
-        // !!! Workaround for making the "+" button do different things
-        //      depending on the fragment displayed, so we only use 1 activity
-        val text : String
-        if (fragment is DeckListFragment) {
-            Log.d(TAG, "DeckListFragment")
-            text = "DeckListFragment"
-        }
-        else if (fragment is CardListFragment){
-            Log.d(TAG, "CardListFragment")
-            text = "CardListFragment"
-        }
-        else {
-            text = "Unknown"
-            Log.d(TAG, "Unknown fragment class")
-        }
-
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
+            // !!! Workaround for making the "+" button do different things
+            //      depending on the fragment displayed, so we only use 1 activity
+            var text : String
+            // https://stackoverflow.com/questions/45247254/how-to-get-current-fragment-from-mainactivity
+            var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container);
+
+            if (fragment is DeckListFragment) {
+                Log.d(TAG, "DeckListFragment")
+                text = "DeckListFragment"
+            }
+            else if (fragment is CardListFragment){
+                Log.d(TAG, "CardListFragment")
+                text = "CardListFragment"
+            }
+            else {
+                text = "Unknown"
+                Log.d(TAG, "Unknown fragment class")
+            }
+
             Snackbar.make(view, text, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
     }
 }
-
-/*
-package es.uam.eps.dadm.cards
-
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-
-    }
-} */
 
 
