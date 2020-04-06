@@ -1,3 +1,5 @@
+package es.uam.eps.dadm.cards
+
 // Special type of card for  *text* questions
 class Cloze(question : String, answer: String) :  Card(question, answer)  {
 

@@ -1,6 +1,5 @@
 package es.uam.eps.dadm.cards
 
-import Card
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class CardListFragment : Fragment() {
-    val TAG: String = "CardListFragment"
+    private val TAG: String = "CardListFragment"
     private lateinit var cardRecyclerView: RecyclerView
     private lateinit var adapter: CardAdapter
 

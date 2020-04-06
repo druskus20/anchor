@@ -1,3 +1,5 @@
+package es.uam.eps.dadm.cards
+
 import kotlin.random.Random
 import java.io.Serializable
 import java.util.*
@@ -133,7 +135,7 @@ open class Deck (var name: String, val id: String = UUID.randomUUID().toString()
         for (day in 0..days){
             println("------------------------------------------")
             println("Fecha: $day")
-            cq.forEach(){
+            cq.forEach {
                 it.key.currentDate = day
                 if (day  == it.key.nextPracticeDate) {
                     it.key.quality = it.value

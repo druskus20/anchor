@@ -1,6 +1,5 @@
 package es.uam.eps.dadm.cards
 
-import Deck
 import androidx.lifecycle.ViewModel
 
 class DeckListViewModel: ViewModel()  {

@@ -1,4 +1,6 @@
-// Quality of question enum
+package es.uam.eps.dadm.cards
+
+// es.uam.eps.dadm.cards.Quality of question enum
 enum class Quality (val value: Int) {
     NO(-1),
     DIFICIL(0),

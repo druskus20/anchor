@@ -1,10 +1,8 @@
 package es.uam.eps.dadm.cards
 
-import Card
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,9 +26,7 @@ class CardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_card, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_card, container, false)
     }
 
     override fun onStart() {

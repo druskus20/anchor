@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    val TAG: String = "MainActivity"
+    private val TAG: String = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         // !!! Workaround for making the "+" button do different things
         //      depending on the fragment displayed, so we only use 1 activity
-        var text : String
+        val text : String
         if (fragment is DeckListFragment) {
             Log.d(TAG, "DeckListFragment")
             text = "DeckListFragment"
@@ -46,11 +46,8 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             Snackbar.make(view, text, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-
-
         }
     }
-
 }
 
 /*

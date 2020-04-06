@@ -1,3 +1,5 @@
+package es.uam.eps.dadm.cards
+
 import java.io.Serializable
 
 // User command class

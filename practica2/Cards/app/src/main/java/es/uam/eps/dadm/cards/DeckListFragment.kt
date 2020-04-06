@@ -1,22 +1,18 @@
 package es.uam.eps.dadm.cards
 
-import Deck
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.list_item_deck.*
 
 class DeckListFragment : Fragment(){
-    val TAG: String = "DeckListFragment"
+    private val TAG: String = "DeckListFragment"
     private lateinit var deckRecyclerView: RecyclerView
     private lateinit var deckAdapter: DeckAdapter
 
@@ -38,9 +34,9 @@ class DeckListFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_card_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_deck_list, container, false)
 
-        deckRecyclerView = view.findViewById(R.id.card_recycler_view) as RecyclerView
+        deckRecyclerView = view.findViewById(R.id.deck_recycler_view) as RecyclerView
         deckRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         updateUI()

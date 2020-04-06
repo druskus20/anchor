@@ -1,3 +1,5 @@
+package es.uam.eps.dadm.cards
+
 import java.lang.NullPointerException
 import java.util.*
 import kotlin.math.max
@@ -16,12 +18,12 @@ open class Card (var question: String, var answer: String, val id: String = UUID
 
 
     companion object {
-        // Asks for a question and answer and returns a new Card
+        // Asks for a question and answer and returns a new es.uam.eps.dadm.cards.Card
         fun readCard(): Card {
 
             var tipo: Int?
             do {
-                print("Introduce el tipo 0 (Card) 1 (Cloze): ")
+                print("Introduce el tipo 0 (es.uam.eps.dadm.cards.Card) 1 (es.uam.eps.dadm.cards.Cloze): ")
                 tipo = readLine()?.toIntOrNull()
             } while (tipo==null || tipo !in 0..1)
 
@@ -50,7 +52,7 @@ open class Card (var question: String, var answer: String, val id: String = UUID
             // Create the desired card type
             return when (tipo) {
                 0 ->  Card(question, answer)
-                1 ->  Cloze(question, answer)
+                1 -> Cloze(question, answer)
                 else -> throw NullPointerException("lecturaTarjeta genera valor nulo")
             }
         }
