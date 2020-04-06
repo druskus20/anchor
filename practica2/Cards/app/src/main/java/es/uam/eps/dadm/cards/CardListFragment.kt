@@ -27,6 +27,8 @@ class CardListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "${cardListViewModel.cards.size} cards")
+        // Call activity method to show fab
+        (activity as MainActivity).showAddButton()
     }
 
     override fun onCreateView(
@@ -54,7 +56,12 @@ class CardListFragment : Fragment() {
         init {
             itemView.setOnClickListener {
                 Toast.makeText(activity, "${card.question} seleccionada", Toast.LENGTH_SHORT).show()
+                activity?.supportFragmentManager
+                    ?.beginTransaction()
+                    ?.replace(R.id.fragment_container, CardFragment.newInstance())
+                    ?.commitNow()
             }
+
         }
         fun bind(card: Card) {
             this.card = card

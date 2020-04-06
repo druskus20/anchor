@@ -2,6 +2,7 @@ package es.uam.eps.dadm.cards
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,6 +54,27 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
     }
+
+    // Hides the fab "+" button
+    fun hideAddButton(){
+        // fab.visibility = View.INVISIBLE // Doesnt work because visibility can only be set from within the library
+        fab.hide()
+    }
+    // Shows the fab "+" button
+    fun showAddButton(){
+        fab.show()
+    }
+/*
+    answerButton = findViewById(R.id.answer_button)
+    questionTextView = findViewById(R.id.question_text_view)
+
+    answerButton.setOnClickListener {
+        questionTextView.text = resources.getString(R.string.answer_text)
+        answerButton.visibility = View.INVISIBLE
+    }
+    */
+
+
 }
 
 

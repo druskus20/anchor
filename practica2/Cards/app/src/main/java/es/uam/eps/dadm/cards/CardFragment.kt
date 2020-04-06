@@ -18,6 +18,8 @@ class CardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         card = Card("Question", "Answer")
+        // Call activity method to hide fab
+        (activity as MainActivity).hideAddButton()
 
     }
 
@@ -56,5 +58,11 @@ class CardFragment : Fragment() {
         answer_edit_text.addTextChangedListener(answerTextWatcher)
         uuid_label_text_view.text = "TARJETA " + card.id.substring(9, 13).toUpperCase()
         date_text_view.text = card.date.substring(0, 16)
+    }
+
+    companion object {
+        fun newInstance(): CardFragment {
+            return CardFragment()
+        }
     }
 }

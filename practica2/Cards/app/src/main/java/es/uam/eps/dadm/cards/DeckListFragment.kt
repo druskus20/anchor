@@ -24,6 +24,8 @@ class DeckListFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "${deckListViewModel.decks.size} decks")
+        // Call activity method to show fab
+        (activity as MainActivity).showAddButton()
 
 
     }
