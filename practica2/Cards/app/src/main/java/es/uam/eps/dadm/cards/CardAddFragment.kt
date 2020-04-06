@@ -24,13 +24,14 @@ class CardAddFragment : Fragment() {
 
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
-        (activity as MainActivity).showAddButton()
+        (activity as MainActivity).hideAddButton()
         return inflater.inflate(R.layout.fragment_card_add, container, false)
     }
 
@@ -63,11 +64,24 @@ class CardAddFragment : Fragment() {
                 Snackbar.make(it, "TEXTO AÑADIR CARTA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-            activity?.supportFragmentManager
-                ?.beginTransaction()
-                ?.replace(R.id.fragment_container, CardListFragment.newInstance())
-                // ?.addToBackStack("Decks") !!!
-                ?.commitNow()
+
+            // !!! If there is stack, go back, if not, render the fragment and add it to the stack
+            //  so we wont go back to the Add fragment
+            activity?.supportFragmentManager?.apply {
+                if (this.backStackEntryCount > 0) {
+                    this.popBackStack();
+                }
+                else {
+                    activity?.supportFragmentManager
+                        ?.beginTransaction()
+                        ?.replace(R.id.fragment_container, CardListFragment.newInstance())
+                        // !!! GO BACK IN THE STACK
+                        ?.addToBackStack("CardList")
+                        ?.commit()
+                }
+            }
+
+
 
         }
 

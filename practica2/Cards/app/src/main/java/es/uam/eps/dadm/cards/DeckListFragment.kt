@@ -63,8 +63,8 @@ class DeckListFragment : Fragment(){
                 activity?.supportFragmentManager
                     ?.beginTransaction()
                     ?.replace(R.id.fragment_container, CardListFragment.newInstance())
-                    // ?.addToBackStack("Decks") !!!
-                    ?.commitNow()
+                    ?.addToBackStack("CardList")
+                    ?.commit()
             }
 
             // Alert dialog for deleting the Deck

@@ -62,7 +62,8 @@ class CardListFragment : Fragment() {
                 activity?.supportFragmentManager
                     ?.beginTransaction()
                     ?.replace(R.id.fragment_container, CardShowFragment.newInstance())
-                    ?.commitNow()
+                    ?.addToBackStack("Decks")
+                    ?.commit()
             }
 
             // Alert dialog for deleting the Card
@@ -89,7 +90,8 @@ class CardListFragment : Fragment() {
                             0 ->  activity?.supportFragmentManager
                                     ?.beginTransaction()
                                     ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
-                                    ?.commitNow()
+                                    ?.addToBackStack("AddCard")
+                                    ?.commit()
                             1 -> showDeleteMenu(view)
                         }
                 })

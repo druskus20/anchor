@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_container, fragment)
+                //  ?.addToBackStack( "DeckList" ) do not go back from the first fragment, just exit
                 .commit()
         }
 
@@ -86,7 +87,8 @@ class MainActivity : AppCompatActivity() {
             ?.beginTransaction()
             ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
             // ?.addToBackStack("Decks") !!!
-            ?.commitNow()
+            ?.addToBackStack( "CardAdd" )
+            ?.commit()
     }
 
     // Hides the fab "+" button
