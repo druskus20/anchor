@@ -1,5 +1,7 @@
 package es.uam.eps.dadm.cards
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
+import com.google.android.material.snackbar.Snackbar
 
 
 class CardListFragment : Fragment() {
@@ -55,14 +57,68 @@ class CardListFragment : Fragment() {
 
         init {
             itemView.setOnClickListener {
-                Toast.makeText(activity, "${card.question} seleccionada", Toast.LENGTH_SHORT).show()
+
                 activity?.supportFragmentManager
                     ?.beginTransaction()
-                    ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
+                    ?.replace(R.id.fragment_container, CardShowFragment.newInstance())
                     ?.commitNow()
             }
 
+            // Alert dialog for deleting the Card
+            itemView.setOnLongClickListener {
+                // Easy way to show a menu without making a new class
+                showOptionsMenu(view)
+                true
+            }
+
         }
+
+        // Easy way to show a menu without making a new class
+        private fun showOptionsMenu(view: View) {
+            val builder: AlertDialog.Builder? = activity?.let {
+                AlertDialog.Builder(it)
+            }
+            val options = arrayOf("EDIT", "DELETE")
+            builder?.apply {
+                setTitle("")
+                setItems(options,
+                    DialogInterface.OnClickListener { _, which ->
+                        when (which)
+                        {
+                            0 ->  activity?.supportFragmentManager
+                                    ?.beginTransaction()
+                                    ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
+                                    ?.commitNow()
+                            1 -> showDeleteMenu(view)
+                        }
+                })
+                setNegativeButton("CANCEL", null)
+            }
+            // Set other dialog properties
+            builder?.create()?.show()
+        }
+        private fun showDeleteMenu(view: View) {
+            val builder: AlertDialog.Builder? = activity?.let {
+                AlertDialog.Builder(it)
+            }
+            builder?.apply {
+                setMessage("DIALOG MSG")
+                setTitle("TITLE")
+                setPositiveButton("DELETE",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        Snackbar.make(view, "CARD HAS BEEN DELETED", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    })
+                setNegativeButton("CANCEL",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
+                    })
+            }
+            // Set other dialog properties
+            builder?.create()?.show()
+        }
+
+
         fun bind(card: Card) {
             this.card = card
             questionTextView.text = card.question

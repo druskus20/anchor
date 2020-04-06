@@ -35,13 +35,13 @@ class MainActivity : AppCompatActivity() {
             //      depending on the fragment displayed, so we only use 1 activity
             var text : String
             // https://stackoverflow.com/questions/45247254/how-to-get-current-fragment-from-mainactivity
-            var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container);
+            var newFragment = supportFragmentManager.findFragmentById(R.id.fragment_container);
 
-            if (fragment is DeckListFragment) {
+            if (newFragment is DeckListFragment) {
                 Log.d(TAG, "DeckListFragment")
                 text = "DeckListFragment"
             }
-            else if (fragment is CardListFragment){
+            else if (newFragment is CardListFragment){
                 Log.d(TAG, "CardListFragment")
                 text = "CardListFragment"
             }

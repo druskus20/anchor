@@ -1,15 +1,20 @@
 package es.uam.eps.dadm.cards
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 
 class DeckListFragment : Fragment(){
     private val TAG: String = "DeckListFragment"
@@ -26,8 +31,6 @@ class DeckListFragment : Fragment(){
         Log.d(TAG, "${deckListViewModel.decks.size} decks")
         // Call activity method to show fab
         (activity as MainActivity).showAddButton()
-
-
     }
 
     override fun onCreateView(
@@ -60,7 +63,34 @@ class DeckListFragment : Fragment(){
                     ?.replace(R.id.fragment_container, CardListFragment.newInstance())
                     ?.commitNow()
             }
+
+            // Alert dialog for deleting the Deck
+            itemView.setOnLongClickListener {
+                showDeleteMenu(view)
+                true
+            }
         }
+        private fun showDeleteMenu(view: View) {
+            val builder: AlertDialog.Builder? = activity?.let {
+                AlertDialog.Builder(it)
+            }
+            builder?.apply {
+                setMessage("DIALOG MSG")
+                setTitle("TITLE")
+                setPositiveButton("DELETE",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        Snackbar.make(view, "DECK HAS BEEN DELETED", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    })
+                setNegativeButton("CANCEL",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
+                    })
+            }
+            // Set other dialog properties
+            builder?.create()?.show()
+        }
+
         fun bind(deck: Deck) {
             this.deck = deck
             nameTextView.text = deck.name

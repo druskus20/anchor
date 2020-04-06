@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/question_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="20dp"
+        android:text="@string/question_text"
+        />
+
+    <Button
+        android:id="@+id/answer_button"
+        android:layout_below="@id/question_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/answer_button_text" />
+
+    <Button
+        android:id="@+id/help_button"
+        android:layout_below="@id/answer_button"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_button_title" />
+
+    <LinearLayout
+        android:id="@+id/difficulty_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hard_button_title"
+            android:backgroundTint="@android:color/holo_red_light">
+        </Button>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/doubt_button_title"
+            android:backgroundTint="@android:color/holo_blue_light">
+        </Button>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/easy_button_title"
+            android:backgroundTint="@android:color/holo_green_light">
+        </Button>
+    </LinearLayout>
+
+</RelativeLayout>
