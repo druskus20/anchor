@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Cards</string>
+    <string name="question_text">Tree</string>
+    <string name="answer_button_text">Ver respuesta</string>
+
+    <string name="hard_button_title">Difícil</string>
+    <string name="doubt_button_title">Dudo</string>
+    <string name="easy_button_title">Fácil</string>
+
+    <string name="answer_text">Árbol</string>
+
+    <string name="title_activity_help">Ayuda</string>
+    <string name="help_button_title">Ayuda</string>
+    <string name="help_text">A tree is a tall plant with a trunk and branches made of wood</string>
+
+    <string name="card_date_label">Fecha</string>
+    <string name="card_question_label">PREGUNTA</string>
+    <string name="card_question_hint">Introduce el texto de la pregunta</string>
+    <string name="card_answer_label">RESPUESTA</string>
+    <string name="card_answer_hint">Introduce el texto de la respuesta</string>
+</resources>

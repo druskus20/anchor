@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Cards</string>
+    <string name="question_text">Tree</string>
+    <string name="answer_button_text">Check answer</string>
+
+    <string name="hard_button_title">Difficult</string>
+    <string name="doubt_button_title">Doubt</string>
+    <string name="easy_button_title">Easy</string>
+
+    <string name="answer_text">Árbol</string>
+
+    <string name="title_activity_help">Help</string>
+    <string name="help_button_title">Help</string>
+    <string name="help_text">A tree is a tall plant with a trunk and branches made of wood</string>
+
+
+    <string name="card_date_label">Date</string>
+    <string name="card_question_label">Question</string>
+    <string name="card_question_hint">Input the text of the question</string>
+    <string name="card_answer_label">Answer</string>
+    <string name="card_answer_hint">Input the text of the answer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+</resources>
