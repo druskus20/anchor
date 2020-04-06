@@ -1,10 +1,13 @@
 package es.uam.eps.dadm.cards
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -39,20 +42,51 @@ class MainActivity : AppCompatActivity() {
 
             if (newFragment is DeckListFragment) {
                 Log.d(TAG, "DeckListFragment")
-                text = "DeckListFragment"
+
+                addDeck(view)
             }
             else if (newFragment is CardListFragment){
-                Log.d(TAG, "CardListFragment")
-                text = "CardListFragment"
+
+                addCard()
             }
             else {
-                text = "Unknown"
-                Log.d(TAG, "Unknown fragment class")
+                Log.e(TAG, "Unknown fragment class")
             }
-
-            Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
         }
+    }
+
+    fun addDeck(view: View) {
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("TITLE --")
+        alert.setMessage("MESSAGE ---")
+
+        // Set an EditText view to get user input
+        val input = EditText(this)
+        alert.setView(input)
+
+        alert.setPositiveButton("Ok",
+            DialogInterface.OnClickListener { dialog, whichButton ->
+                val value = input.text.toString()
+                // !!!
+                Snackbar.make(view, "MSG CARD ADDED", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            })
+
+        alert.setNegativeButton("Cancel",
+            DialogInterface.OnClickListener { dialog, which ->
+            })
+
+        // Set other dialog properties
+        alert.create().show()
+    }
+
+
+    fun addCard() {
+        supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
+            // ?.addToBackStack("Decks") !!!
+            ?.commitNow()
     }
 
     // Hides the fab "+" button

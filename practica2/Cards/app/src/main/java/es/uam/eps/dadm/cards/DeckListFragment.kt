@@ -29,8 +29,8 @@ class DeckListFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "${deckListViewModel.decks.size} decks")
-        // Call activity method to show fab
-        (activity as MainActivity).showAddButton()
+
+
     }
 
     override fun onCreateView(
@@ -38,6 +38,8 @@ class DeckListFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
+        (activity as MainActivity).showAddButton()
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_deck_list, container, false)
 
@@ -61,6 +63,7 @@ class DeckListFragment : Fragment(){
                 activity?.supportFragmentManager
                     ?.beginTransaction()
                     ?.replace(R.id.fragment_container, CardListFragment.newInstance())
+                    // ?.addToBackStack("Decks") !!!
                     ?.commitNow()
             }
 
