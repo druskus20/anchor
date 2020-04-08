@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +18,6 @@ class CardAddFragment : Fragment() {
     private var card = Card(question = "none", answer = "none")
 
     private val mainViewModel by lazy {
-        // !!!!!! Forzado
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
@@ -61,12 +61,20 @@ class CardAddFragment : Fragment() {
 
         // add_card_button
         add_card_button.setOnClickListener {
+
+
             view?.let { it ->
+                if (card.question == "none" || card.answer == "none"){
+                    Snackbar.make(it, "CAMPOS INVALIDOS", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                    return@setOnClickListener
+                }
+
                 mainViewModel.activeDeck?.addCard(card)
                 Snackbar.make(it, "TEXTO AÑADIR CARTA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-
+            
             // !!! If there is stack, go back, if not, render the fragment and add it to the stack
             //  so we wont go back to the Add fragment
             activity?.supportFragmentManager?.apply {
@@ -82,11 +90,7 @@ class CardAddFragment : Fragment() {
                         ?.commit()
                 }
             }
-
-
-
         }
-
 
         question_edit_text.addTextChangedListener(questionTextWatcher)
         answer_edit_text.addTextChangedListener(answerTextWatcher)

@@ -1,20 +1,18 @@
 package es.uam.eps.dadm.cards
 
 
-import android.content.DialogInterface
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
+import java.io.FileNotFoundException
 
 
 class MainActivity : AppCompatActivity() {
     private val TAG: String = "MainActivity"
+    private val savefile = "cards.save"
 
     private val mainActivityViewModel by lazy {
         // !!!!!! Forzado
@@ -41,13 +39,24 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        /// !!!!
-        //mainActivityViewModel.load_save()
+        try {
+            var fis = openFileInput(savefile)
+            mainActivityViewModel.loadSave(fis)
+            fis.close()
+        }
+        catch (e: FileNotFoundException){
+            val view = findViewById<View>(android.R.id.content)
+            Snackbar.make(view, "No se ha ENCOTNRADO FICHEOR", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
     }
 
     override fun onPause() {
         super.onPause()
-        //mainActivityViewModel.saveData()
+        var fos = openFileOutput(savefile, Context.MODE_PRIVATE)
+        mainActivityViewModel.saveData(fos)
+        fos.close()
     }
 
 

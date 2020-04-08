@@ -28,8 +28,6 @@ class CardListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -42,12 +40,8 @@ class CardListFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_card_list, container, false)
 
-
-
         cardRecyclerView = view.findViewById(R.id.card_recycler_view) as RecyclerView
         cardRecyclerView.layoutManager = LinearLayoutManager(activity)
-
-
 
         updateUI()
 

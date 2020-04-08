@@ -29,16 +29,15 @@ class MainViewModel: ViewModel() {
     }
 
     // Saves the app data into a file
-    fun saveData(customSave: String = this.savefile) {
-        var save = customSave
+    fun saveData(fos : FileOutputStream) {
 
         // Makes use of Serializable to store cards to a file
         try{
-            val fos = FileOutputStream(save)
+
             val oos= ObjectOutputStream(fos)
             oos.writeObject(decks)
             oos.close()
-            fos.close()
+
         } catch(ioe: IOException){
             println("Error, fichero no accesible o vacio")
             throw ioe
@@ -46,18 +45,12 @@ class MainViewModel: ViewModel() {
     }
 
     // Loads the app data from a file
-    fun loadSave(customSave: String = this.savefile ){
-        var save = customSave
+    fun loadSave(fis: FileInputStream){
 
-        var saveFile = File(save)
-        if (!saveFile.exists()){
-            return
-        }
         Log.d(this.tag, "LOAD_SAVE")
 
         // Makes use of Serializable to read cards from a file
         try {
-            val fis = FileInputStream(savefile)
             val ois = ObjectInputStream(fis)
 
             // The following warning is being ignored.
@@ -65,7 +58,7 @@ class MainViewModel: ViewModel() {
             //  dealing with a undefined type ArrayList
             decks = ois.readObject() as MutableList<Deck>
             ois.close()
-            fis.close()
+
         } catch (ioe: IOException) {
             println("Error, fichero no accesible o vacio")
             return
