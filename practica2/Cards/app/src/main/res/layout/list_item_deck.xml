@@ -6,7 +6,7 @@
     android:paddingTop="10dp"
     android:paddingRight="16dp"
     android:paddingBottom="10dp"
-    android:background="?android:attr/selectableItemBackground"> <!-- Make it selectable -->
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/list_item_deck_title"
@@ -22,6 +22,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/list_item_deck_title"
+        android:layout_marginTop="3dp"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp" />
+
+
+
 </RelativeLayout>

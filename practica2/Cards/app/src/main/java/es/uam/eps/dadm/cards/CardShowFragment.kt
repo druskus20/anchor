@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.fragment_card_add.*
 import kotlinx.android.synthetic.main.fragment_card_show.*
 
 
@@ -23,7 +24,7 @@ class CardShowFragment() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        card = Card("Question", "Answer")
+        card = mainViewModel.activeCard
 
 
 
@@ -44,34 +45,24 @@ class CardShowFragment() : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        question_text_view.text = card.question
+        answer_text_view.text = card.answer
 
         if (cardShowViewModel.answered == true) {
             answer_button.visibility = View.INVISIBLE
-            help_button.visibility = View.INVISIBLE
-            difficulty_buttons.visibility = View.VISIBLE
 
+            difficulty_buttons.visibility = View.VISIBLE
+            answer_text_view.visibility = View.VISIBLE
         }
 
         answer_button.setOnClickListener {
             cardShowViewModel.answered = true
-            question_text_view.text = resources.getString(R.string.answer_text)
             answer_button.visibility = View.INVISIBLE
-            help_button.visibility = View.INVISIBLE
             difficulty_buttons.visibility = View.VISIBLE
+            answer_text_view.visibility = View.VISIBLE
 
         }
 
-        help_button.setOnClickListener {
-            val builder: AlertDialog.Builder? = activity?.let {
-                AlertDialog.Builder(it)
-            }
-            builder?.apply {
-                setTitle("TITLE")
-                setMessage("DIALOG MSG")
-            }
-            // Set other dialog properties
-            builder?.create()?.show()
-        }
 
 
     }

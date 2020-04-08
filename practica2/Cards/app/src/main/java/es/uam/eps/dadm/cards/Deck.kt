@@ -53,6 +53,16 @@ open class Deck (var name: String, val id: String = UUID.randomUUID().toString()
         throw Exception("Card not found")   // !!!
     }
 
+    fun getCardIndex(id: String) : Int {
+        cards.forEachIndexed{ index, element ->
+            if (element.id == id) {
+                return index
+            }
+        }
+        throw Exception("Card not found")   // !!!
+    }
+
+
     fun  removeCardById(id: String): Int {
         cards.forEachIndexed{ index, element ->
             if (element.id == id) {

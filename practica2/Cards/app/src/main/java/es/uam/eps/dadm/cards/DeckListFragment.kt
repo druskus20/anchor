@@ -112,6 +112,7 @@ class DeckListFragment : Fragment(){
 
             // Delete a deck
             itemView.setOnLongClickListener {
+                mainViewModel.activeDeck = deck
                 showDeleteMenu(view)
 
                 true
@@ -129,8 +130,9 @@ class DeckListFragment : Fragment(){
                     DialogInterface.OnClickListener { dialog, id ->
                         // Delete
 
-                        val index = mainViewModel.removeActiveDeck()
-                        deckAdapter.notifyItemChanged(index)
+                        mainViewModel.removeActiveDeck()
+                        deckAdapter.notifyItemChanged(adapterPosition)
+                        deckAdapter.notifyItemRangeRemoved(adapterPosition, 1)
                         // Show Feedback
                         Snackbar.make(view, "DECK HAS BEEN DELETED", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()

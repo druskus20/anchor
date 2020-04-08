@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -66,13 +70,20 @@
         android:layout_height="wrap_content"
         android:hint="@string/card_answer_hint"/>
 
-    <Button
-        android:id="@+id/add_card_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TEXTO AÑADIR" />
+
 </LinearLayout>
 </ScrollView>
+
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+android:id="@+id/add_card_button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom|end"
+android:layout_margin="@dimen/fab_margin"
+app:srcCompat="@drawable/ic_done_white_24dp" />
+
+    <!-- Custom icon -->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 

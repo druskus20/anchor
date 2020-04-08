@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_card_list.*
+import kotlinx.android.synthetic.main.list_item_card.*
 
 
 class CardListFragment : Fragment() {
@@ -65,30 +66,48 @@ class CardListFragment : Fragment() {
             ?.commit()
     }
 
+    private fun updateUI() {
+        cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
+        cardRecyclerView.adapter = cardAdapter
+    }
+
+
+    companion object {
+        fun newInstance(): CardListFragment {
+            return CardListFragment()
+        }
+    }
+
+
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var card: Card
+
         val questionTextView: TextView = itemView.findViewById(R.id.list_item_question)
         val answerTextView:TextView = itemView.findViewById(R.id.list_item_answer)
         val dateTextView: TextView = itemView.findViewById(R.id.list_item_date)
+        val scoreTextView: TextView = itemView.findViewById(R.id.list_item_score)
+
+
 
         init {
             itemView.setOnClickListener {
                 mainViewModel.activeCard = card
-                activity?.supportFragmentManager
-                    ?.beginTransaction()
-                    ?.replace(R.id.fragment_container, CardShowFragment.newInstance())
-                    ?.addToBackStack("Decks")
-                    ?.commit()
+                card.expanded = !card.expanded
+                cardAdapter.notifyItemChanged(adapterPosition);
             }
 
             // Alert dialog for deleting the Card
             itemView.setOnLongClickListener {
+                mainViewModel.activeCard = card
                 // Easy way to show a menu without making a new class
                 showOptionsMenu(view)
                 true
             }
 
         }
+
+
+
 
         // Easy way to show a menu without making a new class
         private fun showOptionsMenu(view: View) {
@@ -125,8 +144,9 @@ class CardListFragment : Fragment() {
                 setTitle("TITLE")
                 setPositiveButton("DELETE",
                     DialogInterface.OnClickListener { dialog, id ->
-                        val index = mainViewModel.activeDeck.removeCardById(card.id)
-                        cardAdapter.notifyItemChanged(index)
+                        mainViewModel.activeDeck.removeCardById(card.id)
+                        cardAdapter.notifyItemChanged(adapterPosition)
+                        cardAdapter.notifyItemRangeRemoved(adapterPosition, 1)
                         Snackbar.make(view, "CARD HAS BEEN DELETED", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     })
@@ -141,9 +161,18 @@ class CardListFragment : Fragment() {
 
         fun bind(card: Card) {
             this.card = card
+
+            var expanded = card.expanded
+
+
             questionTextView.text = card.question
             answerTextView.text = card.answer
             dateTextView.text = card.date.substring(0,13)
+            scoreTextView.text = card.easiness.toString()
+
+            answerTextView.visibility = if (expanded) View.VISIBLE else View.GONE
+            scoreTextView.visibility = if (expanded) View.VISIBLE else View.GONE
+
         }
     }
 
@@ -160,14 +189,5 @@ class CardListFragment : Fragment() {
         }
     }
 
-    private fun updateUI() {
-        cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
-        cardRecyclerView.adapter = cardAdapter
-    }
 
-    companion object {
-        fun newInstance(): CardListFragment {
-            return CardListFragment()
-        }
-    }
 }
