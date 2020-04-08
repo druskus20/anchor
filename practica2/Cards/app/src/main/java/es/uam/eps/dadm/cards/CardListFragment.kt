@@ -3,32 +3,32 @@ package es.uam.eps.dadm.cards
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_card_list.*
 
 
 class CardListFragment : Fragment() {
     private val TAG: String = "CardListFragment"
     private lateinit var cardRecyclerView: RecyclerView
-    private lateinit var adapter: CardAdapter
+    private lateinit var cardAdapter: CardAdapter
 
 
-    private val cardListViewModel by lazy {
-        ViewModelProviders.of(this).get(CardListViewModel::class.java)
+    private val mainViewModel by lazy {
+        // !!!!!! Forzado
+        activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "${cardListViewModel.cards.size} cards")
+
 
     }
 
@@ -38,16 +38,37 @@ class CardListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
-        (activity as MainActivity).showAddButton()
+        //(activity as MainActivity).showAddButton()
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_card_list, container, false)
+
+
 
         cardRecyclerView = view.findViewById(R.id.card_recycler_view) as RecyclerView
         cardRecyclerView.layoutManager = LinearLayoutManager(activity)
 
+
+
         updateUI()
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Listener for the round "+" button
+        fab.setOnClickListener { view ->
+            addCard()
+        }
+    }
+
+    fun addCard() {
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
+            // ?.addToBackStack("Decks") !!!
+            ?.addToBackStack( "CardAdd" )
+            ?.commit()
     }
 
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -58,7 +79,7 @@ class CardListFragment : Fragment() {
 
         init {
             itemView.setOnClickListener {
-
+                mainViewModel.activeCard = card
                 activity?.supportFragmentManager
                     ?.beginTransaction()
                     ?.replace(R.id.fragment_container, CardShowFragment.newInstance())
@@ -87,11 +108,12 @@ class CardListFragment : Fragment() {
                     DialogInterface.OnClickListener { _, which ->
                         when (which)
                         {
-                            0 ->  activity?.supportFragmentManager
+                            0 ->  Snackbar.make(view, "Cant edit cards yet", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show()/*activity?.supportFragmentManager
                                     ?.beginTransaction()
-                                    ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
+                                    ?.replace(R.id.fragment_container, CardAddFragment.newInstance(deckId))
                                     ?.addToBackStack("AddCard")
-                                    ?.commit()
+                                    ?.commit()*/
                             1 -> showDeleteMenu(view)
                         }
                 })
@@ -109,6 +131,8 @@ class CardListFragment : Fragment() {
                 setTitle("TITLE")
                 setPositiveButton("DELETE",
                     DialogInterface.OnClickListener { dialog, id ->
+                        val index = mainViewModel.activeDeck.removeCardById(card.id)
+                        cardAdapter.notifyItemChanged(index)
                         Snackbar.make(view, "CARD HAS BEEN DELETED", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     })
@@ -121,7 +145,6 @@ class CardListFragment : Fragment() {
             builder?.create()?.show()
         }
 
-
         fun bind(card: Card) {
             this.card = card
             questionTextView.text = card.question
@@ -130,7 +153,6 @@ class CardListFragment : Fragment() {
         }
     }
 
-
     private inner class CardAdapter(val cards : List<Card>) : RecyclerView.Adapter<CardHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
             val view = layoutInflater.inflate(R.layout.list_item_card, parent, false)
@@ -138,7 +160,6 @@ class CardListFragment : Fragment() {
         }
 
         override fun getItemCount() = cards.size
-
         override fun onBindViewHolder(holder: CardHolder, position: Int) {
             holder.bind(cards[position])
 
@@ -146,8 +167,8 @@ class CardListFragment : Fragment() {
     }
 
     private fun updateUI() {
-        adapter = CardAdapter(cardListViewModel.cards)
-        cardRecyclerView.adapter = adapter
+        cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
+        cardRecyclerView.adapter = cardAdapter
     }
 
     companion object {

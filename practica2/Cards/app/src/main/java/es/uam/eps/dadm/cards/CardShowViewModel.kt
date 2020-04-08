@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 
 
 
-class CardsViewModel : ViewModel() {
+class CardShowViewModel : ViewModel() {
     private val TAG : String = ""
     var answered: Boolean = false
     init {

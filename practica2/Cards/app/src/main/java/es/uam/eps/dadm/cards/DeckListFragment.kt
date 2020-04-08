@@ -1,20 +1,20 @@
 package es.uam.eps.dadm.cards
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_deck_list.*
 
 class DeckListFragment : Fragment(){
     private val TAG: String = "DeckListFragment"
@@ -22,13 +22,15 @@ class DeckListFragment : Fragment(){
     private lateinit var deckAdapter: DeckAdapter
 
 
-    private val deckListViewModel by lazy {
-        ViewModelProviders.of(this).get(DeckListViewModel::class.java)
+    private val mainViewModel by lazy {
+        // !!!!!! Forzado
+        activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "${deckListViewModel.decks.size} decks")
+        Log.d(TAG, "${mainViewModel.decks.size} decks")
     }
 
     override fun onCreateView(
@@ -37,17 +39,58 @@ class DeckListFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
-        (activity as MainActivity).showAddButton()
+       // (activity as MainActivity).showAddButton()
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_deck_list, container, false)
+
+
 
         deckRecyclerView = view.findViewById(R.id.deck_recycler_view) as RecyclerView
         deckRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         updateUI()
 
+
         return view
     }
+
+    override fun onStart() {
+        super.onStart()
+        // Listener for the round "+" button
+        fab.setOnClickListener { view ->
+            addDeck(view)
+        }
+    }
+
+    fun addDeck(view: View) {
+
+        val alert: AlertDialog.Builder? = activity.let {
+            AlertDialog.Builder(it)
+        }
+        alert?.setTitle("TITLE --")
+        alert?.setMessage("MESSAGE ---")
+
+
+        // Set an EditText view to get user input
+        val input = EditText(activity)
+        alert?.setView(input)
+
+        alert?.setPositiveButton("Ok",
+            DialogInterface.OnClickListener { dialog, whichButton ->
+                val name = input.text.toString()
+                mainViewModel.addDeck(name)
+                Snackbar.make(view, "MSG CARD ADDED", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            })
+
+        alert?.setNegativeButton("Cancel",
+            DialogInterface.OnClickListener { dialog, which ->
+            })
+
+        // Set other dialog properties
+        alert?.create()?.show()
+    }
+
 
 
     private inner class DeckHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -56,8 +99,10 @@ class DeckListFragment : Fragment(){
         val numCardsTextView: TextView = itemView.findViewById(R.id.list_item_deck_numcards)
 
         init {
-            // Click on the deck, replace fragment
+            // View a deck
+
             itemView.setOnClickListener {
+                mainViewModel.activeDeck = deck
                 activity?.supportFragmentManager
                     ?.beginTransaction()
                     ?.replace(R.id.fragment_container, CardListFragment.newInstance())
@@ -65,13 +110,15 @@ class DeckListFragment : Fragment(){
                     ?.commit()
             }
 
-            // Alert dialog for deleting the Deck
+            // Delete a deck
             itemView.setOnLongClickListener {
                 showDeleteMenu(view)
+
                 true
             }
         }
         private fun showDeleteMenu(view: View) {
+
             val builder: AlertDialog.Builder? = activity?.let {
                 AlertDialog.Builder(it)
             }
@@ -80,6 +127,11 @@ class DeckListFragment : Fragment(){
                 setTitle("TITLE")
                 setPositiveButton("DELETE",
                     DialogInterface.OnClickListener { dialog, id ->
+                        // Delete
+
+                        val index = mainViewModel.removeActiveDeck()
+                        deckAdapter.notifyItemChanged(index)
+                        // Show Feedback
                         Snackbar.make(view, "DECK HAS BEEN DELETED", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     })
@@ -114,7 +166,7 @@ class DeckListFragment : Fragment(){
     }
 
     private fun updateUI() {
-        deckAdapter = DeckAdapter(deckListViewModel.decks)
+        deckAdapter = DeckAdapter(mainViewModel.decks)
         deckRecyclerView.adapter = deckAdapter
     }
 }

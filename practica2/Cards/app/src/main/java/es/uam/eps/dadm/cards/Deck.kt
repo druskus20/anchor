@@ -5,22 +5,14 @@ import java.io.Serializable
 import java.util.*
 
 open class Deck (var name: String, val id: String = UUID.randomUUID().toString()) : Serializable {
-    private var cards: MutableList<Card> = mutableListOf()
-    private var opciones: MutableList<Command> = mutableListOf()
+    var cards: MutableList<Card> = mutableListOf()
+
     var numCards = 0
 
     // We could add categories at some point
     // We could add a % rate of difficultness
 
-    init {
-        // Menu options
-        opciones.add(Command(::cmdAddCard, "Añadir tarjeta"))
-        opciones.add(Command(::cmdShowCards, "Presentar tarjetas"))
-        opciones.add(Command(::cmdDetailCards, "Listar valores de tarjetas"))
-        opciones.add(Command(::cmdSimulate, "Simula el paso del tiempo y las respuestas"))
-        opciones.add(Command(null, "Volver"))
-        // We could add a save deck option
-    }
+
     companion object {
         // Asks for a title and creates an empty deck
         fun readDeck(): Deck {
@@ -40,44 +32,37 @@ open class Deck (var name: String, val id: String = UUID.randomUUID().toString()
 
 
 
-    // Shows different options
-    fun menu() {
-        while (true) {
-            println("------------------------------------------")
-            var optionNumber = 1
-            opciones.forEach {
-                println("$optionNumber. ${it.nombre}")
-                optionNumber++
-            }
-            // Asks for user input
-            var userSel: Int?
-            do {
-                print("Elige una opción: ")
-                userSel = readLine()?.toIntOrNull() ?: let {
-                    println("Error, opcion incorrecta")
-                    null
-                }
-                println("------------------------------------------")
-            } while (userSel == null || userSel !in 1..opciones.size)
 
-            // Calls the function selected
-
-            if (userSel == opciones.size) {     // Exit
-                return
-            }
-            userSel -= 1
-            opciones[userSel].call()
-        }
-    }
 
     // user command functions ------------------------------------
-    private fun cmdAddCard() {
+    fun addCard(card: Card) {
         // We should create the card outside the deck if we want to
         //  reuse the same card
-        val card: Card = Card.readCard()
         cards.add(card)
         numCards++
     }
+
+
+
+    fun  getCardById(id: String): Card {
+        cards.forEach{
+            if (it.id == id) {
+                return it
+            }
+        }
+        throw Exception("Card not found")   // !!!
+    }
+
+    fun  removeCardById(id: String): Int {
+        cards.forEachIndexed{ index, element ->
+            if (element.id == id) {
+                cards.removeAt(index)
+                return index
+            }
+        }
+        throw Exception("Card not found")   // !!!
+    }
+
 
     private fun cmdShowCards() {
         cards.forEach {
