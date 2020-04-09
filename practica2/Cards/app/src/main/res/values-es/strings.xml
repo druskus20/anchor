@@ -1,21 +1,62 @@
 <resources>
-    <string name="app_name">Cards</string>
-    <string name="question_text">Tree</string>
-    <string name="answer_button_text">Ver respuesta</string>
+    <string name="app_name">Cartas</string>
 
-    <string name="hard_button_title">Difícil</string>
+    <string name="ok_button">Ok</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="delete_button">Eliminar</string>
+    <string name="question">Pregunta</string>
+    <string name="answer">Respuesta</string>
+
+    <!-- DECK_LIST  -->
+    <string name="deck_list_title">Barajas</string>
+    <string name="deck_add_msg">Se ha añadido una nueva baraja</string>
+    <string name="deck_delete_msg">La baraja ha sido eliminada</string>
+    <string name="deck_delete_question">¿Estas seguro?</string>
+    <string name="deck_delete_title">Elmiminacion de baraja</string>
+    <string name="deck_add_subt">Intriduce el nombre de la baraja</string>
+    <string name="deck_add_title">Añadir baraja</string>
+
+    <!-- CARD_LIST  -->
+    <string name="card_list_title">Baraja</string>
+    <string name="card_delete_msg">La carta ha sido eliminada</string>
+    <string name="card_delete_question">¿Estas seguro?</string>
+    <string name="card_delete_title">Eliminacion de carta</string>
+    <string name="card_delete_option">Eliminar</string>
+    <string name="card_edit_option">Editar</string>
+    <string name="study_button">Iniciar sesion de estudio</string>
+
+    <!-- EDIT  -->
+    <string name="edit_card_title">Carta</string>
+    <string name="edit_card_msg">Carta editada</string>
+
+    <!-- SHOW  -->
+    <string name="show_card_title">Sesion de estudio</string>
+    <string name="show_card_cards_left">Cartas restantes: </string>
+    <string name="no_cards_study_msg">No hay ninguna carta que estudiar hoy</string>
+
+
+    <!-- ADD  -->
+    <string name="card_add_msg">Nueva carta ha sido añadida</string>
+
+
+    <!-- SHOW  -->
+    <string name="answer_button_text">Comprobar respuesta</string>
+    <string name="hard_button_title">Dificil</string>
     <string name="doubt_button_title">Dudo</string>
-    <string name="easy_button_title">Fácil</string>
+    <string name="easy_button_title">Facil</string>
 
-    <string name="answer_text">Árbol</string>
 
-    <string name="title_activity_help">Ayuda</string>
-    <string name="help_button_title">Ayuda</string>
-    <string name="help_text">A tree is a tall plant with a trunk and branches made of wood</string>
+
+
+
 
     <string name="card_date_label">Fecha</string>
-    <string name="card_question_label">PREGUNTA</string>
+    <string name="card_question_label">Pregunta</string>
     <string name="card_question_hint">Introduce el texto de la pregunta</string>
-    <string name="card_answer_label">RESPUESTA</string>
+    <string name="card_answer_label">Respuesta</string>
     <string name="card_answer_hint">Introduce el texto de la respuesta</string>
+
+
+
+
 </resources>

@@ -47,10 +47,6 @@
 
 
 
-    <string name="title_activity_help">Help</string>
-    <string name="help_button_title">Help</string>
-    <string name="help_text">A tree is a tall plant with a trunk and branches made of wood</string>
-
 
     <string name="card_date_label">Date</string>
     <string name="card_question_label">Question</string>
