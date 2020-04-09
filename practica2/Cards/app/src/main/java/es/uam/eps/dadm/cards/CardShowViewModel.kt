@@ -9,8 +9,8 @@ class CardShowViewModel : ViewModel() {
     private val TAG : String = "CardShowViewModel"
     var studyCardList = mutableListOf<Card>()
     var currentCardCount = 0
-
-    var answered: Boolean = false
+    var end = false
+    var answered = false
 
     init {
         Log.d(TAG, "CardsViewModel created")

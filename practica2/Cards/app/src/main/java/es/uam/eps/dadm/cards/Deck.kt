@@ -88,59 +88,7 @@ open class Deck (var name: String, val id: String = UUID.randomUUID().toString()
     }
 
 
-    private fun cmdSimulate() {
-        val cardQualityMap = mutableMapOf<Card, Quality>()
 
-        // Asks for a number of days to simulate
-        var days: Int?
-        do {
-            print("Elige el numero de dias a simular: ")
-            days = readLine()?.toIntOrNull() ?: let {
-                println("Error, opcion incorrecta")
-                null
-            }
-        } while(days == null)
-
-        // Randomizes quality for each card and adds it to the map
-        for (card in cards) {
-            cardQualityMap[card] = when (Random.nextInt(0, 3))
-            {
-                0 -> Quality.DIFICIL
-                1 -> Quality.DUDO
-                2 -> Quality.FACIL
-                else -> throw Exception("Invalid quality number")
-            }
-        }
-
-        simulate(cardQualityMap, days)
-    }
-
-    // Simulate the responses to a list of cards over 20 days
-    private fun simulate(cq : Map<Card, Quality>, days: Int) {
-
-        /*
-        println("Fecha: 0")
-        cq.forEach(){
-            it.key.currentDate = 0
-            it.key.quality = it.value
-            it.key.update()
-            it.key.details()
-        }*/
-
-        for (day in 0..days){
-            println("------------------------------------------")
-            println("Fecha: $day")
-            cq.forEach {
-                it.key.currentDate = day
-                if (day  == it.key.nextPracticeDate) {
-                    it.key.quality = it.value
-                    it.key.update()
-                    it.key.details()
-                }
-            }
-        }
-        println("------------------------------------------")
-    }
 
     fun print(){
         print("Nombre: $name, Numero de tarjetas: ${cards.size}")

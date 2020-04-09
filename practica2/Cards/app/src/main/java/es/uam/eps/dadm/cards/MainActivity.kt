@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import java.io.FileNotFoundException
@@ -13,6 +14,8 @@ import java.io.FileNotFoundException
 class MainActivity : AppCompatActivity() {
     private val TAG: String = "MainActivity"
     private val savefile = "cards.save"
+
+
 
     private val mainActivityViewModel by lazy {
         // !!!!!! Forzado
@@ -37,6 +40,12 @@ class MainActivity : AppCompatActivity() {
                 //  ?.addToBackStack( "DeckList" ) do not go back from the first fragment, just exit
                 .commit()
         }
+
+        // Livedata for the titlebar
+        mainActivityViewModel?.actionbarTitle?.observe(this, Observer {
+            supportActionBar?.title=it
+        })
+
 
 
         try {

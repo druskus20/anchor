@@ -38,6 +38,7 @@ class CardAddFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.card_add_title)
 
         val questionTextWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -94,8 +95,8 @@ class CardAddFragment : Fragment() {
 
         question_edit_text.addTextChangedListener(questionTextWatcher)
         answer_edit_text.addTextChangedListener(answerTextWatcher)
-        uuid_label_text_view.text = getString(R.string.show_card_title) + ": " + card.id.substring(9, 13).toUpperCase()
-        date_text_view.text = card.date.substring(0, 16)
+        uuid_label_text_view.text = getString(R.string.card_add_title) + ": " + card.id.substring(9, 13).toUpperCase()
+        date_text_view.text = card.date
     }
 
     companion object {

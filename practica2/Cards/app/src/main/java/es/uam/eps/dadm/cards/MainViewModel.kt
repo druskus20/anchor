@@ -2,6 +2,7 @@ package es.uam.eps.dadm.cards
 
 import android.os.Environment
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.*
 import java.lang.Exception
@@ -13,6 +14,7 @@ class MainViewModel: ViewModel() {
     var decks =   mutableListOf<Deck>()
     lateinit var activeDeck : Deck
     lateinit var activeCard : Card
+    val actionbarTitle = MutableLiveData<String>()
 
     fun removeActiveDeck() : Int {
         val index = decks.indexOf(activeDeck)

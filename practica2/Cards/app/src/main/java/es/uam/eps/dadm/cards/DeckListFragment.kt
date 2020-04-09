@@ -47,6 +47,7 @@ class DeckListFragment : Fragment(){
         deckRecyclerView = view.findViewById(R.id.deck_recycler_view) as RecyclerView
         deckRecyclerView.layoutManager = LinearLayoutManager(activity)
 
+
         updateUI()
 
 
@@ -55,6 +56,8 @@ class DeckListFragment : Fragment(){
 
     override fun onStart() {
         super.onStart()
+
+        mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.deck_list_title)
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
             addDeck(view)

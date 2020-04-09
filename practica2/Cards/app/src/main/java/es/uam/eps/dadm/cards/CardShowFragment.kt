@@ -3,6 +3,7 @@ package es.uam.eps.dadm.cards
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_card_add.*
 import kotlinx.android.synthetic.main.fragment_card_show.*
+import org.joda.time.DateTime
+import org.joda.time.DateTimeComparator
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.time.ExperimentalTime
@@ -36,15 +39,15 @@ class CardShowFragment() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Creates the list with the cards to study
-        mainViewModel.activeDeck.cards.forEach {
-            if (it.nextPracticeDate == today) {
-                cardShowViewModel.studyCardList.add(it)
-
+        if (cardShowViewModel.studyCardList.size == 0) {
+            // Creates the list with the cards to study TODAY
+            var dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
+            mainViewModel.activeDeck.cards.forEach {
+                val diff = dateTimeComparator.compare(it.nextPracticeDate, DateTime.now())
+                if (diff == 0) {
+                    cardShowViewModel.studyCardList.add(it)
+                }
             }
-
-
         }
     }
 
@@ -68,6 +71,8 @@ class CardShowFragment() : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.show_card_title)
         // If there are no more cards to study
         if (cardShowViewModel.studyCardList.size == 0){
             view?.let {
@@ -76,10 +81,9 @@ class CardShowFragment() : Fragment() {
             }
             activity?.supportFragmentManager?.popBackStack();
         }
-        nextCard()
 
-        question_text_view.text = currentCard.question
-        answer_text_view.text = currentCard.answer
+        setFirstCard()
+        //nextCard()
 
 
         if (cardShowViewModel.answered == true) {
@@ -122,36 +126,45 @@ class CardShowFragment() : Fragment() {
 
     fun testEndSession(){
         activity?.supportFragmentManager?.apply {
-            if (cardShowViewModel.currentCardCount == cardShowViewModel.studyCardList.size)
+            if (cardShowViewModel.currentCardCount == cardShowViewModel.studyCardList.size - 1) {
+                cardShowViewModel.end = true
                 this.popBackStack();
+            }
         }
+    }
+
+
+    fun setFirstCard() {
+
+        if (cardShowViewModel.studyCardList.size <= cardShowViewModel.currentCardCount)
+            return
+
+        currentCard = cardShowViewModel.studyCardList[cardShowViewModel.currentCardCount]
+        question_text_view.text = currentCard.question
+        answer_text_view.text = currentCard.answer
+        card_count.text = getString(R.string.show_card_cards_left) + cardShowViewModel.currentCardCount + "/" + cardShowViewModel.studyCardList.size
+
     }
     // Para usar localdatenow
     fun nextCard() {
 
-/*
-       // UPDATE TEST
-        currentCard.question = " AAAA " + cardShowViewModel.currentCardCount
-        currentCard.answer = "BBBB " + cardShowViewModel.currentCardCount
-*/
-        if (cardShowViewModel.studyCardList.size <= cardShowViewModel.currentCardCount)
+        if (cardShowViewModel.end)
             return
-        else if (cardShowViewModel.studyCardList.size > 0)
-            currentCard = cardShowViewModel.studyCardList[cardShowViewModel.currentCardCount]
 
+        cardShowViewModel.currentCardCount++
+
+        if (cardShowViewModel.studyCardList.size > 0)
+            currentCard = cardShowViewModel.studyCardList[cardShowViewModel.currentCardCount]
 
         // Reload UI
         answer_button.visibility = View.VISIBLE
-
         question_text_view.text = currentCard.question
         answer_text_view.text = currentCard.answer
-
 
         difficulty_buttons.visibility = View.INVISIBLE
         answer_text_view.visibility = View.INVISIBLE
         cardShowViewModel.answered = false
-        card_count.text = getString(R.string.show_card_cards_left) + cardShowViewModel.currentCardCount + "/" + cardShowViewModel.studyCardList.size
-        cardShowViewModel.currentCardCount++
+        card_count.text = getString(R.string.show_card_cards_left) + (cardShowViewModel.currentCardCount) + "/" + cardShowViewModel.studyCardList.size
     }
 
     companion object {

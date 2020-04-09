@@ -53,6 +53,8 @@ class CardListFragment : Fragment() {
         super.onStart()
 
         title_label.text = getString(R.string.card_list_title) + ": " +  mainViewModel.activeDeck.name
+        mainViewModel.actionbarTitle.value = getString(R.string.app_name) + ": " + title_label.text
+
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
             addCard()
@@ -161,6 +163,7 @@ class CardListFragment : Fragment() {
                 setPositiveButton(getString(R.string.ok_button),
                     DialogInterface.OnClickListener { dialog, id ->
                         mainViewModel.activeDeck.removeCardById(card.id)
+                        mainViewModel.activeDeck.numCards--
                         cardAdapter.notifyItemChanged(adapterPosition)
                         cardAdapter.notifyItemRangeRemoved(adapterPosition, 1)
                         Snackbar.make(view, getString(R.string.card_delete_msg), Snackbar.LENGTH_LONG)
@@ -183,8 +186,8 @@ class CardListFragment : Fragment() {
 
             questionTextView.text = card.question
             answerTextView.text = card.answer
-            dateTextView.text = card.date.substring(0,13)
-            scoreView.text = card.nextPracticeDate.toString()
+            dateTextView.text = card.date
+            scoreView.text = card.nextPracticeDate.toLocalDate().toString()
 
             answerTextView.visibility = if (expanded) View.VISIBLE else View.GONE
             scoreView.visibility = if (expanded) View.VISIBLE else View.GONE

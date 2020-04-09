@@ -1,20 +1,20 @@
 package es.uam.eps.dadm.cards
 
+import org.joda.time.DateTime
 import java.lang.NullPointerException
 import java.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 import java.io.Serializable
-// Base classa for any card
-open class Card (var question: String, var answer: String,  val id: String = UUID.randomUUID().toString(), val date: String = Date().toString()):  Serializable {
+// Base class for any card
+open class Card (var question: String, var answer: String,  val id: String = UUID.randomUUID().toString(), val date: String = DateTime.now().toLocalDate().toString()):  Serializable {
     private var repetitions = 0
     private var interval = 1
     var easiness = 2.5
     var expanded = false
     // This ones should probably be private but
     //  for simplicity reasons they are not (currently)
-    var nextPracticeDate = 1
-    var currentDate = 0
+    var nextPracticeDate: DateTime = DateTime.now()
     var quality : Quality = Quality.NO
 
 
@@ -90,7 +90,7 @@ open class Card (var question: String, var answer: String,  val id: String = UUI
         else                        interval = (interval*easiness).roundToInt()
 
         // Set nextPracticeDate
-        nextPracticeDate = currentDate+interval
+        nextPracticeDate = nextPracticeDate.plusDays(interval)
     }
 
     // Shows details for each card

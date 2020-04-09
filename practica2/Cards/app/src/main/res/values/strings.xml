@@ -26,17 +26,18 @@
     <string name="study_button">Begin study session</string>
 
     <!-- EDIT  -->
-    <string name="edit_card_title">Card</string>
+    <string name="edit_card_title">Edit card</string>
     <string name="edit_card_msg">Card edited</string>
 
     <!-- SHOW  -->
     <string name="show_card_title">Study session</string>
-    <string name="show_card_cards_left">Cards left: </string>
+    <string name="show_card_cards_left">Cards completed: </string>
     <string name="no_cards_study_msg">There aren\'t any more cards to study today</string>
 
 
     <!-- ADD  -->
     <string name="card_add_msg">New card has been added</string>
+    <string name="card_add_title">Add Card</string>
 
 
     <!-- SHOW  -->

@@ -44,7 +44,12 @@ class CardEditFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+
+
         card = mainViewModel.activeCard
+        mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.edit_card_title)
+
 
         question_edit_title.text = getString(R.string.question) + ": " + card.question
         answer_edit_title.text = getString(R.string.answer) + ": " + card.answer
@@ -94,7 +99,7 @@ class CardEditFragment : Fragment() {
         question_edit_text.addTextChangedListener(questionTextWatcher)
         answer_edit_text.addTextChangedListener(answerTextWatcher)
         uuid_label_text_view.text = getString(R.string.edit_card_title) + ": " + card.id.substring(9, 13).toUpperCase()
-        date_text_view.text = card.date.substring(0, 16)
+        date_text_view.text = card.date
     }
 
     companion object {

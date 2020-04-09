@@ -31,7 +31,7 @@
 
     <!-- SHOW  -->
     <string name="show_card_title">Sesion de estudio</string>
-    <string name="show_card_cards_left">Cartas restantes: </string>
+    <string name="show_card_cards_left">Cartas completadas: </string>
     <string name="no_cards_study_msg">No hay ninguna carta que estudiar hoy</string>
 
 
