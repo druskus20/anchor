@@ -30,7 +30,6 @@ class DeckListFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "${mainViewModel.decks.size} decks")
     }
 
     override fun onCreateView(
@@ -67,23 +66,23 @@ class DeckListFragment : Fragment(){
         val alert: AlertDialog.Builder? = activity.let {
             AlertDialog.Builder(it)
         }
-        alert?.setTitle("TITLE --")
-        alert?.setMessage("MESSAGE ---")
+        alert?.setTitle(getString(R.string.deck_add_title))
+        alert?.setMessage(getString(R.string.deck_add_subt))
 
 
         // Set an EditText view to get user input
         val input = EditText(activity)
         alert?.setView(input)
 
-        alert?.setPositiveButton("Ok",
+        alert?.setPositiveButton(getString(R.string.ok_button),
             DialogInterface.OnClickListener { dialog, whichButton ->
                 val name = input.text.toString()
                 mainViewModel.addDeck(name)
-                Snackbar.make(view, "MSG CARD ADDED", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, getString(R.string.deck_add_msg), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             })
 
-        alert?.setNegativeButton("Cancel",
+        alert?.setNegativeButton(getString(R.string.cancel_button),
             DialogInterface.OnClickListener { dialog, which ->
             })
 
@@ -124,9 +123,9 @@ class DeckListFragment : Fragment(){
                 AlertDialog.Builder(it)
             }
             builder?.apply {
-                setMessage("DIALOG MSG")
-                setTitle("TITLE")
-                setPositiveButton("DELETE",
+                setMessage(getString(R.string.deck_delete_question))
+                setTitle(getString(R.string.deck_delete_title))
+                setPositiveButton(getString(R.string.delete_button),
                     DialogInterface.OnClickListener { dialog, id ->
                         // Delete
 
@@ -134,10 +133,10 @@ class DeckListFragment : Fragment(){
                         deckAdapter.notifyItemChanged(adapterPosition)
                         deckAdapter.notifyItemRangeRemoved(adapterPosition, 1)
                         // Show Feedback
-                        Snackbar.make(view, "DECK HAS BEEN DELETED", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view,  getString(R.string.deck_delete_msg), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     })
-                setNegativeButton("CANCEL",
+                setNegativeButton(getString(R.string.cancel_button),
                     DialogInterface.OnClickListener { dialog, id ->
                         // User cancelled the dialog
                     })
@@ -155,7 +154,7 @@ class DeckListFragment : Fragment(){
 
     private inner class DeckAdapter(val decks : List<Deck>) : RecyclerView.Adapter<DeckHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckHolder {
-            val view = layoutInflater.inflate(R.layout.list_item_deck, parent, false) // !!!
+            val view = layoutInflater.inflate(R.layout.list_item_deck, parent, false)
             return DeckHolder(view)
         }
 

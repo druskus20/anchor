@@ -1,13 +1,51 @@
 <resources>
     <string name="app_name">Cards</string>
-    <string name="question_text">Tree</string>
-    <string name="answer_button_text">Check answer</string>
 
+    <string name="ok_button">Ok</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
+
+    <!-- DECK_LIST  -->
+    <string name="deck_list_title">Decks</string>
+    <string name="deck_add_msg">New deck has been added</string>
+    <string name="deck_delete_msg">The deck has been deleted</string>
+    <string name="deck_delete_question">Are you sure?</string>
+    <string name="deck_delete_title">Deck deletion</string>
+    <string name="deck_add_subt">Enter the name of the deck</string>
+    <string name="deck_add_title">Add deck</string>
+
+    <!-- CARD_LIST  -->
+    <string name="card_list_title">Deck</string>
+    <string name="card_delete_msg">The card has been deleted</string>
+    <string name="card_delete_question">Are you sure?</string>
+    <string name="card_delete_title">Card deletion</string>
+    <string name="card_delete_option">Delete</string>
+    <string name="card_edit_option">Edit</string>
+    <string name="study_button">Begin study session</string>
+
+    <!-- EDIT  -->
+    <string name="edit_card_title">Card</string>
+    <string name="edit_card_msg">Card edited</string>
+
+    <!-- SHOW  -->
+    <string name="show_card_title">Study session</string>
+    <string name="show_card_cards_left">Cards left: </string>
+    <string name="no_cards_study_msg">There aren\'t any more cards to study today</string>
+
+
+    <!-- ADD  -->
+    <string name="card_add_msg">New card has been added</string>
+
+
+    <!-- SHOW  -->
+    <string name="answer_button_text">Check answer</string>
     <string name="hard_button_title">Difficult</string>
     <string name="doubt_button_title">Doubt</string>
     <string name="easy_button_title">Easy</string>
 
-    <string name="answer_text">Árbol</string>
+
 
     <string name="title_activity_help">Help</string>
     <string name="help_button_title">Help</string>
@@ -20,17 +58,7 @@
     <string name="card_answer_label">Answer</string>
     <string name="card_answer_hint">Input the text of the answer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 
 </resources>

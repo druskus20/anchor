@@ -43,7 +43,7 @@ class CardListFragment : Fragment() {
 
         cardRecyclerView = view.findViewById(R.id.card_recycler_view) as RecyclerView
         cardRecyclerView.layoutManager = LinearLayoutManager(activity)
-
+        mainViewModel.activeDeck.cards.forEach{ it.expanded = false }
         updateUI()
 
         return view
@@ -51,9 +51,15 @@ class CardListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        title_label.text = getString(R.string.card_list_title) + ": " +  mainViewModel.activeDeck.name
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
             addCard()
+        }
+
+        study_button.setOnClickListener{
+            beginStudy()
         }
     }
 
@@ -65,6 +71,18 @@ class CardListFragment : Fragment() {
             ?.addToBackStack( "CardAdd" )
             ?.commit()
     }
+
+
+    fun beginStudy() {
+        activity?.let {
+        it.supportFragmentManager.
+        beginTransaction()
+        .replace(R.id.fragment_container, CardShowFragment.newInstance())
+        .addToBackStack("Study")
+        .commit()
+        }
+    }
+
 
     private fun updateUI() {
         cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
@@ -81,11 +99,11 @@ class CardListFragment : Fragment() {
 
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var card: Card
-
+        var expanded = false
         val questionTextView: TextView = itemView.findViewById(R.id.list_item_question)
         val answerTextView:TextView = itemView.findViewById(R.id.list_item_answer)
         val dateTextView: TextView = itemView.findViewById(R.id.list_item_date)
-        val scoreTextView: TextView = itemView.findViewById(R.id.list_item_score)
+        val scoreView: TextView = itemView.findViewById(R.id.list_item_score)
 
 
 
@@ -114,19 +132,17 @@ class CardListFragment : Fragment() {
             val builder: AlertDialog.Builder? = activity?.let {
                 AlertDialog.Builder(it)
             }
-            val options = arrayOf("EDIT", "DELETE")
+            val options = arrayOf(getString(R.string.card_edit_option), getString(R.string.card_delete_option))
             builder?.apply {
-                setTitle("")
                 setItems(options,
                     DialogInterface.OnClickListener { _, which ->
                         when (which)
                         {
-                            0 ->  Snackbar.make(view, "Cant edit cards yet", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show()/*activity?.supportFragmentManager
+                            0 -> activity?.supportFragmentManager
                                     ?.beginTransaction()
-                                    ?.replace(R.id.fragment_container, CardAddFragment.newInstance(deckId))
-                                    ?.addToBackStack("AddCard")
-                                    ?.commit()*/
+                                    ?.replace(R.id.fragment_container, CardEditFragment.newInstance())
+                                    ?.addToBackStack("editCard")
+                                    ?.commit()
                             1 -> showDeleteMenu(view)
                         }
                 })
@@ -140,17 +156,17 @@ class CardListFragment : Fragment() {
                 AlertDialog.Builder(it)
             }
             builder?.apply {
-                setMessage("DIALOG MSG")
-                setTitle("TITLE")
-                setPositiveButton("DELETE",
+                setTitle(getString(R.string.card_delete_title))
+                setMessage(getString(R.string.card_delete_question))
+                setPositiveButton(getString(R.string.ok_button),
                     DialogInterface.OnClickListener { dialog, id ->
                         mainViewModel.activeDeck.removeCardById(card.id)
                         cardAdapter.notifyItemChanged(adapterPosition)
                         cardAdapter.notifyItemRangeRemoved(adapterPosition, 1)
-                        Snackbar.make(view, "CARD HAS BEEN DELETED", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, getString(R.string.card_delete_msg), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
                     })
-                setNegativeButton("CANCEL",
+                setNegativeButton(getString(R.string.cancel_button),
                     DialogInterface.OnClickListener { dialog, id ->
                         // User cancelled the dialog
                     })
@@ -168,10 +184,10 @@ class CardListFragment : Fragment() {
             questionTextView.text = card.question
             answerTextView.text = card.answer
             dateTextView.text = card.date.substring(0,13)
-            scoreTextView.text = card.easiness.toString()
+            scoreView.text = card.nextPracticeDate.toString()
 
             answerTextView.visibility = if (expanded) View.VISIBLE else View.GONE
-            scoreTextView.visibility = if (expanded) View.VISIBLE else View.GONE
+            scoreView.visibility = if (expanded) View.VISIBLE else View.GONE
 
         }
     }

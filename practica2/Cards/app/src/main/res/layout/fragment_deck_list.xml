@@ -4,13 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-<androidx.recyclerview.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/deck_recycler_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
 
 
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/title_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="@string/deck_list_title"
+        android:textSize="16sp"
+
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/deck_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </LinearLayout>
 
 
 <com.google.android.material.floatingactionbutton.FloatingActionButton
