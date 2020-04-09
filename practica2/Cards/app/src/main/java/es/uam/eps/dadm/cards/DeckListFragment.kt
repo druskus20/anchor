@@ -61,6 +61,7 @@ class DeckListFragment : Fragment(){
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
             addDeck(view)
+
         }
     }
 
@@ -81,6 +82,7 @@ class DeckListFragment : Fragment(){
             DialogInterface.OnClickListener { dialog, whichButton ->
                 val name = input.text.toString()
                 mainViewModel.addDeck(name)
+                deckAdapter.notifyDataSetChanged()
                 Snackbar.make(view, getString(R.string.deck_add_msg), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             })
