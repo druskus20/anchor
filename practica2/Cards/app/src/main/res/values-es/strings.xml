@@ -36,14 +36,14 @@
 
 
     <!-- ADD  -->
-    <string name="card_add_msg">Nueva carta ha sido añadida</string>
+    <string name="card_add_title">Añadir Carta</string>
 
 
     <!-- SHOW  -->
     <string name="answer_button_text">Comprobar respuesta</string>
-    <string name="hard_button_title">Dificil</string>
+    <string name="hard_button_title">Difícil</string>
     <string name="doubt_button_title">Dudo</string>
-    <string name="easy_button_title">Facil</string>
+    <string name="easy_button_title">Fácil</string>
 
 
 
@@ -55,7 +55,6 @@
     <string name="card_question_hint">Introduce el texto de la pregunta</string>
     <string name="card_answer_label">Respuesta</string>
     <string name="card_answer_hint">Introduce el texto de la respuesta</string>
-
 
 
 

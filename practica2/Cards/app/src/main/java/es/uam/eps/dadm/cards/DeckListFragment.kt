@@ -3,7 +3,6 @@ package es.uam.eps.dadm.cards
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_deck_list.*
 
 class DeckListFragment : Fragment(){
-    private val TAG: String = "DeckListFragment"
     private lateinit var deckRecyclerView: RecyclerView
     private lateinit var deckAdapter: DeckAdapter
 
@@ -28,9 +26,7 @@ class DeckListFragment : Fragment(){
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +61,7 @@ class DeckListFragment : Fragment(){
         }
     }
 
-    fun addDeck(view: View) {
+    private fun addDeck(view: View) {
 
         val alert: AlertDialog.Builder? = activity.let {
             AlertDialog.Builder(it)
@@ -78,18 +74,18 @@ class DeckListFragment : Fragment(){
         val input = EditText(activity)
         alert?.setView(input)
 
-        alert?.setPositiveButton(getString(R.string.ok_button),
-            DialogInterface.OnClickListener { dialog, whichButton ->
-                val name = input.text.toString()
-                mainViewModel.addDeck(name)
-                deckAdapter.notifyDataSetChanged()
-                Snackbar.make(view, getString(R.string.deck_add_msg), Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            })
+        alert?.setPositiveButton(getString(R.string.ok_button)
+        ) { dialog, whichButton ->
+            val name = input.text.toString()
+            mainViewModel.addDeck(name)
+            deckAdapter.notifyDataSetChanged()
+            Snackbar.make(view, getString(R.string.deck_add_msg), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
 
-        alert?.setNegativeButton(getString(R.string.cancel_button),
-            DialogInterface.OnClickListener { dialog, which ->
-            })
+        alert?.setNegativeButton(getString(R.string.cancel_button)
+        ) { dialog, which ->
+        }
 
         // Set other dialog properties
         alert?.create()?.show()
@@ -130,21 +126,21 @@ class DeckListFragment : Fragment(){
             builder?.apply {
                 setMessage(getString(R.string.deck_delete_question))
                 setTitle(getString(R.string.deck_delete_title))
-                setPositiveButton(getString(R.string.delete_button),
-                    DialogInterface.OnClickListener { dialog, id ->
-                        // Delete
+                setPositiveButton(getString(R.string.delete_button)
+                ) { dialog, id ->
+                    // Delete
 
-                        mainViewModel.removeActiveDeck()
-                        deckAdapter.notifyItemChanged(adapterPosition)
-                        deckAdapter.notifyItemRangeRemoved(adapterPosition, 1)
-                        // Show Feedback
-                        Snackbar.make(view,  getString(R.string.deck_delete_msg), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show()
-                    })
-                setNegativeButton(getString(R.string.cancel_button),
-                    DialogInterface.OnClickListener { dialog, id ->
-                        // User cancelled the dialog
-                    })
+                    mainViewModel.removeActiveDeck()
+                    deckAdapter.notifyItemChanged(adapterPosition)
+                    deckAdapter.notifyItemRangeRemoved(adapterPosition, 1)
+                    // Show Feedback
+                    Snackbar.make(view,  getString(R.string.deck_delete_msg), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                }
+                setNegativeButton(getString(R.string.cancel_button)
+                ) { dialog, id ->
+                    // User cancelled the dialog
+                }
             }
             // Set other dialog properties
             builder?.create()?.show()

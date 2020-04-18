@@ -1,7 +1,6 @@
 package es.uam.eps.dadm.cards
 
 import org.joda.time.DateTime
-import java.lang.NullPointerException
 import java.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -10,7 +9,7 @@ import java.io.Serializable
 open class Card (var question: String, var answer: String,  val id: String = UUID.randomUUID().toString(), val date: String = DateTime.now().toLocalDate().toString()):  Serializable {
     private var repetitions = 0
     private var interval = 1
-    var easiness = 2.5
+    private var easiness = 2.5
     var expanded = false
     // This ones should probably be private but
     //  for simplicity reasons they are not (currently)
@@ -18,46 +17,6 @@ open class Card (var question: String, var answer: String,  val id: String = UUI
     var quality : Quality = Quality.NO
 
 
-    companion object {
-        // Asks for a question and answer and returns a new es.uam.eps.dadm.cards.Card
-        fun readCard(): Card {
-
-            var tipo: Int?
-            do {
-                print("Introduce el tipo 0 (es.uam.eps.dadm.cards.Card) 1 (es.uam.eps.dadm.cards.Cloze): ")
-                tipo = readLine()?.toIntOrNull()
-            } while (tipo==null || tipo !in 0..1)
-
-
-
-            println("Nueva Tarjeta:")
-            print("Teclee la pregunta: ")
-            var question: String?
-            do {
-                question = readLine()
-                if (question.isNullOrEmpty()) {
-                    println("Error, introduce la pregunta de nuevo")
-                    question = null
-                }
-            } while (question == null)
-            print("Teclee la respuesta: ")
-            var answer: String?
-            do {
-                answer = readLine()
-                if (answer.isNullOrEmpty()) {
-                    println("Error, introduce la respuesta de nuevo")
-                    answer = null
-                }
-            } while (answer == null)
-
-            // Create the desired card type
-            return when (tipo) {
-                0 ->  Card(question, answer)
-                1 -> Cloze(question, answer)
-                else -> throw NullPointerException("lecturaTarjeta genera valor nulo")
-            }
-        }
-    }
 
     // Shows the anwser and stores the input quality
     open fun show() {
@@ -91,11 +50,6 @@ open class Card (var question: String, var answer: String,  val id: String = UUI
 
         // Set nextPracticeDate
         nextPracticeDate = nextPracticeDate.plusDays(interval)
-    }
-
-    // Shows details for each card
-    fun details(){
-        println("$question ($answer)        eas = %.2f rep = $repetitions int = $interval next = $nextPracticeDate".format(easiness))
     }
 
 

@@ -12,7 +12,6 @@ import java.io.FileNotFoundException
 
 
 class MainActivity : AppCompatActivity() {
-    private val TAG: String = "MainActivity"
     private val savefile = "cards.save"
 
 
@@ -42,14 +41,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Livedata for the titlebar
-        mainActivityViewModel?.actionbarTitle?.observe(this, Observer {
+        mainActivityViewModel.actionbarTitle.observe(this, Observer {
             supportActionBar?.title=it
         })
 
 
 
         try {
-            var fis = openFileInput(savefile)
+            val fis = openFileInput(savefile)
             mainActivityViewModel.loadSave(fis)
             fis.close()
         }
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        var fos = openFileOutput(savefile, Context.MODE_PRIVATE)
+        val fos = openFileOutput(savefile, Context.MODE_PRIVATE)
         mainActivityViewModel.saveData(fos)
         fos.close()
     }

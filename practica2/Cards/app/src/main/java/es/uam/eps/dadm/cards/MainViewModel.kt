@@ -1,16 +1,13 @@
 package es.uam.eps.dadm.cards
-
-import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.*
-import java.lang.Exception
+
 
 
 class MainViewModel: ViewModel() {
     private  val tag = "MainActivityViewModel"
-    val savefile = "decks.save"     // Default filename for the saved data
     var decks =   mutableListOf<Deck>()
     lateinit var activeDeck : Deck
     lateinit var activeCard : Card

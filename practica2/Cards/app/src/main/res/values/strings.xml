@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Cards</string>
 
-    <string name="ok_button">Ok</string>
+    <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
     <string name="delete_button">Delete</string>
     <string name="question">Question</string>
@@ -36,7 +36,6 @@
 
 
     <!-- ADD  -->
-    <string name="card_add_msg">New card has been added</string>
     <string name="card_add_title">Add Card</string>
 
 

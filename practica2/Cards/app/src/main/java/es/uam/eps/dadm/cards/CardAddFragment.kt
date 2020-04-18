@@ -6,7 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -21,10 +21,7 @@ class CardAddFragment : Fragment() {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //card = Card("Question", "Answer") // !!!
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +68,7 @@ class CardAddFragment : Fragment() {
                     return@setOnClickListener
                 }
 
-                mainViewModel.activeDeck?.addCard(card)
+                mainViewModel.activeDeck.addCard(card)
                 Snackbar.make(it, "TEXTO AÑADIR CARTA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
@@ -80,7 +77,7 @@ class CardAddFragment : Fragment() {
             //  so we wont go back to the Add fragment
             activity?.supportFragmentManager?.apply {
                 if (this.backStackEntryCount > 0) {
-                    this.popBackStack();
+                    this.popBackStack()
                 }
                 else {
                     activity?.supportFragmentManager

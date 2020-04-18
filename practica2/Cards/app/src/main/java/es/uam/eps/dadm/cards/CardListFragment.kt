@@ -1,7 +1,6 @@
 package es.uam.eps.dadm.cards
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_card_list.*
-import kotlinx.android.synthetic.main.list_item_card.*
+
 
 
 class CardListFragment : Fragment() {
-    private val TAG: String = "CardListFragment"
     private lateinit var cardRecyclerView: RecyclerView
     private lateinit var cardAdapter: CardAdapter
 
@@ -27,9 +25,7 @@ class CardListFragment : Fragment() {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +61,7 @@ class CardListFragment : Fragment() {
         }
     }
 
-    fun addCard() {
+    private fun addCard() {
         activity?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
@@ -75,14 +71,10 @@ class CardListFragment : Fragment() {
     }
 
 
-    fun beginStudy() {
-        activity?.let {
-        it.supportFragmentManager.
-        beginTransaction()
-        .replace(R.id.fragment_container, CardShowFragment.newInstance())
-        .addToBackStack("Study")
-        .commit()
-        }
+    private fun beginStudy() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, CardShowFragment.newInstance())?.addToBackStack("Study")
+            ?.commit()
     }
 
 
@@ -101,7 +93,6 @@ class CardListFragment : Fragment() {
 
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var card: Card
-        var expanded = false
         val questionTextView: TextView = itemView.findViewById(R.id.list_item_question)
         val answerTextView:TextView = itemView.findViewById(R.id.list_item_answer)
         val dateTextView: TextView = itemView.findViewById(R.id.list_item_date)
@@ -113,7 +104,7 @@ class CardListFragment : Fragment() {
             itemView.setOnClickListener {
                 mainViewModel.activeCard = card
                 card.expanded = !card.expanded
-                cardAdapter.notifyItemChanged(adapterPosition);
+                cardAdapter.notifyItemChanged(adapterPosition)
             }
 
             // Alert dialog for deleting the Card
@@ -136,18 +127,17 @@ class CardListFragment : Fragment() {
             }
             val options = arrayOf(getString(R.string.card_edit_option), getString(R.string.card_delete_option))
             builder?.apply {
-                setItems(options,
-                    DialogInterface.OnClickListener { _, which ->
-                        when (which)
-                        {
-                            0 -> activity?.supportFragmentManager
-                                    ?.beginTransaction()
-                                    ?.replace(R.id.fragment_container, CardEditFragment.newInstance())
-                                    ?.addToBackStack("editCard")
-                                    ?.commit()
-                            1 -> showDeleteMenu(view)
-                        }
-                })
+                setItems(options
+                ) { _, which ->
+                    when (which) {
+                        0 -> activity?.supportFragmentManager
+                            ?.beginTransaction()
+                            ?.replace(R.id.fragment_container, CardEditFragment.newInstance())
+                            ?.addToBackStack("editCard")
+                            ?.commit()
+                        1 -> showDeleteMenu(view)
+                    }
+                }
                 setNegativeButton("CANCEL", null)
             }
             // Set other dialog properties
@@ -160,19 +150,19 @@ class CardListFragment : Fragment() {
             builder?.apply {
                 setTitle(getString(R.string.card_delete_title))
                 setMessage(getString(R.string.card_delete_question))
-                setPositiveButton(getString(R.string.ok_button),
-                    DialogInterface.OnClickListener { dialog, id ->
-                        mainViewModel.activeDeck.removeCardById(card.id)
-                        mainViewModel.activeDeck.numCards--
-                        cardAdapter.notifyItemChanged(adapterPosition)
-                        cardAdapter.notifyItemRangeRemoved(adapterPosition, 1)
-                        Snackbar.make(view, getString(R.string.card_delete_msg), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show()
-                    })
-                setNegativeButton(getString(R.string.cancel_button),
-                    DialogInterface.OnClickListener { dialog, id ->
-                        // User cancelled the dialog
-                    })
+                setPositiveButton(getString(R.string.ok_button)
+                ) { dialog, id ->
+                    mainViewModel.activeDeck.removeCardById(card.id)
+                    mainViewModel.activeDeck.numCards--
+                    cardAdapter.notifyItemChanged(adapterPosition)
+                    cardAdapter.notifyItemRangeRemoved(adapterPosition, 1)
+                    Snackbar.make(view, getString(R.string.card_delete_msg), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                }
+                setNegativeButton(getString(R.string.cancel_button)
+                ) { dialog, id ->
+                    // User cancelled the dialog
+                }
             }
             // Set other dialog properties
             builder?.create()?.show()
@@ -181,7 +171,7 @@ class CardListFragment : Fragment() {
         fun bind(card: Card) {
             this.card = card
 
-            var expanded = card.expanded
+            val expanded = card.expanded
 
 
             questionTextView.text = card.question

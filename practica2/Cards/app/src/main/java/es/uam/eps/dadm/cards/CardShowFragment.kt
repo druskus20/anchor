@@ -1,31 +1,19 @@
 package es.uam.eps.dadm.cards
 
-import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_card_add.*
 import kotlinx.android.synthetic.main.fragment_card_show.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeComparator
-import java.time.LocalDate
-import java.time.LocalDateTime
-import kotlin.time.ExperimentalTime
-import kotlin.time.days
-import kotlin.time.minutes
 
 
-class CardShowFragment() : Fragment() {
+class CardShowFragment : Fragment() {
     private var currentCard = Card("None", "None")
-    var today = 1 //
-
 
     // Specific viewModel for hiding elements
     private val cardShowViewModel: CardShowViewModel by lazy {
@@ -41,7 +29,7 @@ class CardShowFragment() : Fragment() {
         super.onCreate(savedInstanceState)
         if (cardShowViewModel.studyCardList.size == 0) {
             // Creates the list with the cards to study TODAY
-            var dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
+            val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
             mainViewModel.activeDeck.cards.forEach {
                 val diff = dateTimeComparator.compare(it.nextPracticeDate, DateTime.now())
                 if (diff == 0) {
@@ -60,10 +48,9 @@ class CardShowFragment() : Fragment() {
             // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
             //(activity as MainActivity).hideAddButton()
             super.onCreateView(inflater, container, savedInstanceState)
-            var fragment = inflater.inflate(R.layout.fragment_card_show, container, false)
 
 
-            return fragment
+            return inflater.inflate(R.layout.fragment_card_show, container, false)
         }
 
 
@@ -79,14 +66,13 @@ class CardShowFragment() : Fragment() {
                 Snackbar.make(it, getString(R.string.no_cards_study_msg), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-            activity?.supportFragmentManager?.popBackStack();
+            activity?.supportFragmentManager?.popBackStack()
         }
 
         setFirstCard()
-        //nextCard()
 
 
-        if (cardShowViewModel.answered == true) {
+        if (cardShowViewModel.answered) {
             answer_button.visibility = View.INVISIBLE
 
             difficulty_buttons.visibility = View.VISIBLE
@@ -124,17 +110,17 @@ class CardShowFragment() : Fragment() {
         }
     }
 
-    fun testEndSession(){
+    private fun testEndSession(){
         activity?.supportFragmentManager?.apply {
             if (cardShowViewModel.currentCardCount == cardShowViewModel.studyCardList.size - 1) {
                 cardShowViewModel.end = true
-                this.popBackStack();
+                this.popBackStack()
             }
         }
     }
 
 
-    fun setFirstCard() {
+    private fun setFirstCard() {
 
         if (cardShowViewModel.studyCardList.size <= cardShowViewModel.currentCardCount)
             return
@@ -146,7 +132,7 @@ class CardShowFragment() : Fragment() {
 
     }
     // Para usar localdatenow
-    fun nextCard() {
+    private fun nextCard() {
 
         if (cardShowViewModel.end)
             return

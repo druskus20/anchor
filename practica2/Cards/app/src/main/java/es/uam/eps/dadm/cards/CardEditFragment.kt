@@ -6,31 +6,25 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_card_add.*
 import kotlinx.android.synthetic.main.fragment_card_add.answer_edit_text
 import kotlinx.android.synthetic.main.fragment_card_add.date_text_view
 import kotlinx.android.synthetic.main.fragment_card_add.question_edit_text
 import kotlinx.android.synthetic.main.fragment_card_add.uuid_label_text_view
 import kotlinx.android.synthetic.main.fragment_card_edit.*
-import kotlinx.android.synthetic.main.fragment_card_show.view.*
 
 
 class CardEditFragment : Fragment() {
 
-    lateinit private var card : Card
+    private lateinit var card : Card
 
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //card = Card("Question", "Answer") // !!!
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +76,7 @@ class CardEditFragment : Fragment() {
                 }
                 if (this.backStackEntryCount > 0) {
 
-                    this.popBackStack();
+                    this.popBackStack()
 
                 }
                 else {
