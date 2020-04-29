@@ -1,6 +1,7 @@
 package es.uam.eps.dadm.cards
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,8 @@ class CardListFragment : Fragment() {
     private lateinit var cardRecyclerView: RecyclerView
     private lateinit var cardAdapter: CardAdapter
 
+    // !!!
+    var listener: onCardListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
         // !!!!!! Forzado
@@ -53,14 +56,35 @@ class CardListFragment : Fragment() {
 
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
-            addCard()
+            // addCard()
+            //listener = context as onCardListFragmentInteractionListener?
+            listener?.onCardAdd()
         }
-
         study_button.setOnClickListener{
-            beginStudy()
+            listener?.onBeginStudy()
         }
     }
 
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as onCardListFragmentInteractionListener?
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface onCardListFragmentInteractionListener {
+        fun onCardAdd()
+        fun onBeginStudy()
+        fun onEditCard()
+    }
+
+
+
+/*
     private fun addCard() {
         activity?.supportFragmentManager
             ?.beginTransaction()
@@ -69,20 +93,12 @@ class CardListFragment : Fragment() {
             ?.addToBackStack( "CardAdd" )
             ?.commit()
     }
-
-
-    private fun beginStudy() {
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, CardShowFragment.newInstance())?.addToBackStack("Study")
-            ?.commit()
-    }
-
+*/
 
     private fun updateUI() {
         cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
         cardRecyclerView.adapter = cardAdapter
     }
-
 
     companion object {
         fun newInstance(): CardListFragment {
@@ -90,15 +106,12 @@ class CardListFragment : Fragment() {
         }
     }
 
-
     private inner class CardHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var card: Card
         val questionTextView: TextView = itemView.findViewById(R.id.list_item_question)
         val answerTextView:TextView = itemView.findViewById(R.id.list_item_answer)
         val dateTextView: TextView = itemView.findViewById(R.id.list_item_date)
         val scoreView: TextView = itemView.findViewById(R.id.list_item_score)
-
-
 
         init {
             itemView.setOnClickListener {
@@ -114,11 +127,7 @@ class CardListFragment : Fragment() {
                 showOptionsMenu(view)
                 true
             }
-
         }
-
-
-
 
         // Easy way to show a menu without making a new class
         private fun showOptionsMenu(view: View) {
@@ -130,11 +139,7 @@ class CardListFragment : Fragment() {
                 setItems(options
                 ) { _, which ->
                     when (which) {
-                        0 -> activity?.supportFragmentManager
-                            ?.beginTransaction()
-                            ?.replace(R.id.fragment_container, CardEditFragment.newInstance())
-                            ?.addToBackStack("editCard")
-                            ?.commit()
+                        0 -> listener?.onEditCard()
                         1 -> showDeleteMenu(view)
                     }
                 }
@@ -173,7 +178,6 @@ class CardListFragment : Fragment() {
 
             val expanded = card.expanded
 
-
             questionTextView.text = card.question
             answerTextView.text = card.answer
             dateTextView.text = card.date
@@ -181,7 +185,6 @@ class CardListFragment : Fragment() {
 
             answerTextView.visibility = if (expanded) View.VISIBLE else View.GONE
             scoreView.visibility = if (expanded) View.VISIBLE else View.GONE
-
         }
     }
 

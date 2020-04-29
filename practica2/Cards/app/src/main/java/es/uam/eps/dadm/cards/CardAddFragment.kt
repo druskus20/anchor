@@ -59,8 +59,6 @@ class CardAddFragment : Fragment() {
 
         // add_card_button
         add_card_button.setOnClickListener {
-
-
             view?.let { it ->
                 if (card.question == "none" || card.answer == "none"){
                     Snackbar.make(it, "CAMPOS INVALIDOS", Snackbar.LENGTH_LONG)

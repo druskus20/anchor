@@ -1,5 +1,6 @@
 package es.uam.eps.dadm.cards
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import org.joda.time.DateTimeComparator
 
 class CardShowFragment : Fragment() {
     private var currentCard = Card("None", "None")
+    var listener: CardShowFragment.onCardShowFragmentInteractionListener? = null
 
     // Specific viewModel for hiding elements
     private val cardShowViewModel: CardShowViewModel by lazy {
@@ -39,22 +41,32 @@ class CardShowFragment : Fragment() {
         }
     }
 
-
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
-            //(activity as MainActivity).hideAddButton()
-            super.onCreateView(inflater, container, savedInstanceState)
-
-
-            return inflater.inflate(R.layout.fragment_card_show, container, false)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
+        //(activity as MainActivity).hideAddButton()
+        super.onCreateView(inflater, container, savedInstanceState)
 
 
+        return inflater.inflate(R.layout.fragment_card_show, container, false)
+    }
 
+    interface onCardShowFragmentInteractionListener {
+        fun onEndStudy()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as onCardShowFragmentInteractionListener?
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
 
     override fun onStart() {
         super.onStart()
@@ -66,11 +78,10 @@ class CardShowFragment : Fragment() {
                 Snackbar.make(it, getString(R.string.no_cards_study_msg), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-            activity?.supportFragmentManager?.popBackStack()
+            listener?.onEndStudy()
         }
 
         setFirstCard()
-
 
         if (cardShowViewModel.answered) {
             answer_button.visibility = View.INVISIBLE
@@ -119,7 +130,6 @@ class CardShowFragment : Fragment() {
         }
     }
 
-
     private fun setFirstCard() {
 
         if (cardShowViewModel.studyCardList.size <= cardShowViewModel.currentCardCount)
@@ -159,4 +169,3 @@ class CardShowFragment : Fragment() {
         }
     }
 }
-

@@ -3,6 +3,7 @@ package es.uam.eps.dadm.cards
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -11,10 +12,10 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.FileNotFoundException
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInteractionListener,
+                                          DeckListFragment.onDeckListFragmentInteractionListener,
+                                          CardListFragment.onCardListFragmentInteractionListener {
     private val savefile = "cards.save"
-
-
 
     private val mainActivityViewModel by lazy {
         // !!!!!! Forzado
@@ -22,7 +23,45 @@ class MainActivity : AppCompatActivity() {
         //ViewModelProviders.of(this).get(DeckListViewModel::class.java)
     }
 
+    override fun onDeckSelected() {
+    var fragment = CardListFragment()
+    supportFragmentManager
+        ?.beginTransaction()
+        ?.replace(R.id.fragment_container, fragment)
+        ?.addToBackStack("CardList")
+        ?.commit()
+    }
+    override fun onCardAdd() {
+        var fragment = CardAddFragment()
+        supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, fragment)
+            // ?.addToBackStack("Decks") !!!
+            ?.addToBackStack( "CardAdd" )
+            ?.commit()
+    }
 
+    override fun onEndStudy() {
+        supportFragmentManager?.popBackStack()
+    }
+
+    override fun onBeginStudy() {
+        var fragment = CardShowFragment()
+        supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, fragment)
+            ?.addToBackStack("Study")
+            ?.commit()
+    }
+
+    override fun onEditCard(){
+        var fragment = CardEditFragment()
+        supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, fragment)
+            ?.addToBackStack("editCard")
+            ?.commit()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,8 +84,6 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.title=it
         })
 
-
-
         try {
             val fis = openFileInput(savefile)
             mainActivityViewModel.loadSave(fis)
@@ -66,20 +103,6 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.saveData(fos)
         fos.close()
     }
-
-
-
-/*
-    answerButton = findViewById(R.id.answer_button)
-    questionTextView = findViewById(R.id.question_text_view)
-
-    answerButton.setOnClickListener {
-        questionTextView.text = resources.getString(R.string.answer_text)
-        answerButton.visibility = View.INVISIBLE
-    }
-    */
-
-
 }
 
 

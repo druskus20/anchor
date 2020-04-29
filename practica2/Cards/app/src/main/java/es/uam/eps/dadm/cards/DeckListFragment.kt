@@ -1,6 +1,7 @@
 package es.uam.eps.dadm.cards
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_deck_list.*
 class DeckListFragment : Fragment(){
     private lateinit var deckRecyclerView: RecyclerView
     private lateinit var deckAdapter: DeckAdapter
-
+    var listener: onDeckListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
         // !!!!!! Forzado
@@ -57,7 +58,6 @@ class DeckListFragment : Fragment(){
         // Listener for the round "+" button
         fab.setOnClickListener { view ->
             addDeck(view)
-
         }
     }
 
@@ -91,7 +91,19 @@ class DeckListFragment : Fragment(){
         alert?.create()?.show()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as onDeckListFragmentInteractionListener?
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface onDeckListFragmentInteractionListener {
+        fun onDeckSelected()
+    }
 
     private inner class DeckHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var deck: Deck
@@ -103,11 +115,8 @@ class DeckListFragment : Fragment(){
 
             itemView.setOnClickListener {
                 mainViewModel.activeDeck = deck
-                activity?.supportFragmentManager
-                    ?.beginTransaction()
-                    ?.replace(R.id.fragment_container, CardListFragment.newInstance())
-                    ?.addToBackStack("CardList")
-                    ?.commit()
+                listener?.onDeckSelected()
+
             }
 
             // Delete a deck
@@ -118,6 +127,7 @@ class DeckListFragment : Fragment(){
                 true
             }
         }
+
         private fun showDeleteMenu(view: View) {
 
             val builder: AlertDialog.Builder? = activity?.let {
