@@ -55,7 +55,7 @@
     <string name="card_question_hint">Introduce el texto de la pregunta</string>
     <string name="card_answer_label">Respuesta</string>
     <string name="card_answer_hint">Introduce el texto de la respuesta</string>
-
+    <string name="menu_more_button">Mas</string>
 
 
 </resources>

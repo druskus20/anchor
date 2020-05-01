@@ -1,5 +1,6 @@
 package es.uam.eps.dadm.cards
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,13 +17,26 @@ import kotlinx.android.synthetic.main.fragment_card_add.*
 class CardAddFragment : Fragment() {
 
     private var card = Card(question = "none", answer = "none")
-
+    var listener: onCardAddFragmentInteractionListener? = null
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as onCardAddFragmentInteractionListener?
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface onCardAddFragmentInteractionListener {
+        fun onCardAddNoBackStack()
+    }
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,12 +92,7 @@ class CardAddFragment : Fragment() {
                     this.popBackStack()
                 }
                 else {
-                    activity?.supportFragmentManager
-                        ?.beginTransaction()
-                        ?.replace(R.id.fragment_container, CardListFragment.newInstance())
-                        // !!! GO BACK IN THE STACK
-                        ?.addToBackStack("CardList")
-                        ?.commit()
+                    listener?.onCardAddNoBackStack()
                 }
             }
         }

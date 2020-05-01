@@ -3,9 +3,7 @@ package es.uam.eps.dadm.cards
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -28,8 +26,28 @@ class CardListFragment : Fragment() {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
 
+    // Menu bar
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.cards_menu , menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+
+            R.id.stats_button -> {
+                // Show stats menu
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,8 +100,6 @@ class CardListFragment : Fragment() {
         fun onEditCard()
     }
 
-
-
 /*
     private fun addCard() {
         activity?.supportFragmentManager
@@ -94,7 +110,6 @@ class CardListFragment : Fragment() {
             ?.commit()
     }
 */
-
     private fun updateUI() {
         cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
         cardRecyclerView.adapter = cardAdapter
@@ -182,7 +197,6 @@ class CardListFragment : Fragment() {
             answerTextView.text = card.answer
             dateTextView.text = card.date
             scoreView.text = card.nextPracticeDate.toLocalDate().toString()
-
             answerTextView.visibility = if (expanded) View.VISIBLE else View.GONE
             scoreView.visibility = if (expanded) View.VISIBLE else View.GONE
         }

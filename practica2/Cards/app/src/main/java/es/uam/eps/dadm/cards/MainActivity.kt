@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import java.io.FileNotFoundException
 
 
 class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInteractionListener,
                                           DeckListFragment.onDeckListFragmentInteractionListener,
-                                          CardListFragment.onCardListFragmentInteractionListener {
+                                          CardListFragment.onCardListFragmentInteractionListener,
+                                          CardAddFragment.onCardAddFragmentInteractionListener {
     private val savefile = "cards.save"
 
     private val mainActivityViewModel by lazy {
@@ -23,7 +25,18 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         //ViewModelProviders.of(this).get(DeckListViewModel::class.java)
     }
 
-    override fun onDeckSelected() {
+
+
+    override fun onCardAddNoBackStack() {
+        supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, CardListFragment.newInstance())
+            // !!! GO BACK IN THE STACK
+            ?.addToBackStack("CardList")
+            ?.commit()
+    }
+
+     override fun onDeckSelected() {
     var fragment = CardListFragment()
     supportFragmentManager
         ?.beginTransaction()
@@ -66,6 +79,8 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         // If there is already a fragment created
         var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
@@ -83,6 +98,15 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         mainActivityViewModel.actionbarTitle.observe(this, Observer {
             supportActionBar?.title=it
         })
+
+        Log.d("ANDROIDDDO", "CONEXION")
+        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        Log.d("ANDROIDDDO", database.toString())
+        val reference = database.getReference("mensaje")
+        Log.d("ANDROIDDDO", reference.toString())
+
+        Log.d("ANDROIDDDO", reference.child("key").setValue("Hello World").exception.toString())
+
 
         try {
             val fis = openFileInput(savefile)
@@ -104,5 +128,6 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         fos.close()
     }
 }
+
 
 
