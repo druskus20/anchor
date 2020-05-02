@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import es.uam.eps.dadm.cards.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_deck_list.*
 
 class DeckListFragment : Fragment(){
@@ -99,6 +100,12 @@ class DeckListFragment : Fragment(){
             R.id.settings_button -> {
                 // Show stats menu
                 val intent = Intent(activity, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.logout_button -> {
+                val intent = Intent(activity, LoginActivity::class.java)
+                activity?.finish()
                 startActivity(intent)
                 true
             }
