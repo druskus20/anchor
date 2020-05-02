@@ -13,12 +13,6 @@ open class Deck (var name: String, val id: String = UUID.randomUUID().toString()
     // We could add a % rate of difficultness
 
 
-
-
-
-
-
-
     // user command functions ------------------------------------
     fun addCard(card: Card) {
         // We should create the card outside the deck if we want to
@@ -26,9 +20,6 @@ open class Deck (var name: String, val id: String = UUID.randomUUID().toString()
         cards.add(card)
         numCards++
     }
-
-
-
 
     fun  removeCardById(id: String): Int {
         cards.forEachIndexed{ index, element ->

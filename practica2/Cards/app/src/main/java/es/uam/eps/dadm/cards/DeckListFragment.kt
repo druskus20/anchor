@@ -3,10 +3,9 @@ package es.uam.eps.dadm.cards
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -27,6 +26,10 @@ class DeckListFragment : Fragment(){
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
 
     override fun onCreateView(
@@ -35,18 +38,14 @@ class DeckListFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
-       // (activity as MainActivity).showAddButton()
+        // (activity as MainActivity).showAddButton()
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_deck_list, container, false)
-
-
 
         deckRecyclerView = view.findViewById(R.id.deck_recycler_view) as RecyclerView
         deckRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-
         updateUI()
-
 
         return view
     }
@@ -69,7 +68,6 @@ class DeckListFragment : Fragment(){
         alert?.setTitle(getString(R.string.deck_add_title))
         alert?.setMessage(getString(R.string.deck_add_subt))
 
-
         // Set an EditText view to get user input
         val input = EditText(activity)
         alert?.setView(input)
@@ -91,6 +89,23 @@ class DeckListFragment : Fragment(){
         alert?.create()?.show()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.std_menu , menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings_button -> {
+                // Show stats menu
+                val intent = Intent(activity, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = context as onDeckListFragmentInteractionListener?
@@ -100,6 +115,7 @@ class DeckListFragment : Fragment(){
         super.onDetach()
         listener = null
     }
+
 
     interface onDeckListFragmentInteractionListener {
         fun onDeckSelected()

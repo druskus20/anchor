@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_card_add.*
 
 
@@ -44,6 +46,8 @@ class CardAddFragment : Fragment() {
     ): View? {
         // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
         //(activity as MainActivity).hideAddButton()
+
+
         return inflater.inflate(R.layout.fragment_card_add, container, false)
     }
 
@@ -79,7 +83,6 @@ class CardAddFragment : Fragment() {
                         .setAction("Action", null).show()
                     return@setOnClickListener
                 }
-
                 mainViewModel.activeDeck.addCard(card)
                 Snackbar.make(it, "TEXTO AÑADIR CARTA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()

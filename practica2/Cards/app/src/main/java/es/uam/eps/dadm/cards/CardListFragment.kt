@@ -2,6 +2,7 @@ package es.uam.eps.dadm.cards
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -31,16 +32,24 @@ class CardListFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     // Menu bar
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.cards_menu , menu)
+        inflater.inflate(R.menu.card_list_menu , menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-
+            R.id.settings_button -> {
+                // Show stats menu
+                val intent = Intent(activity, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.stats_button -> {
                 // Show stats menu
                 true

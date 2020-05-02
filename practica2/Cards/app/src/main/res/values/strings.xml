@@ -84,6 +84,11 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="menu_logout_button">Logout</string>
+    <string name="remember_me_login">Remember_me</string>
+    <string name="max_tarjetas_text">Max number of cards</string>
+    <string name="activate_blackboard">Blackboard mode</string>
+    <string name="menu_settings_button">Settings</string>
 
 
 </resources>
