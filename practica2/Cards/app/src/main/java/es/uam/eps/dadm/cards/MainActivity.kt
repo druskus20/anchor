@@ -28,16 +28,17 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
 
 
     override fun onCardAddNoBackStack() {
+        var fragment = CardListFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragment_container, CardListFragment.newInstance())
+            ?.replace(R.id.fragment_container, fragment)
             // !!! GO BACK IN THE STACK
             ?.addToBackStack("CardList")
             ?.commit()
     }
 
      override fun onDeckSelected() {
-    var fragment = CardListFragment()
+    var fragment = CardListFragment.newInstance()
     supportFragmentManager
         ?.beginTransaction()
         ?.replace(R.id.fragment_container, fragment)
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         ?.commit()
     }
     override fun onCardAdd() {
-        var fragment = CardAddFragment()
+        var fragment = CardAddFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragment_container, fragment)
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
     }
 
     override fun onBeginStudy() {
-        var fragment = CardShowFragment()
+        var fragment = CardShowFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragment_container, fragment)
@@ -68,13 +69,23 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
     }
 
     override fun onEditCard(){
-        var fragment = CardEditFragment()
+        var fragment = CardEditFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragment_container, fragment)
             ?.addToBackStack("editCard")
             ?.commit()
     }
+
+    override fun onDeckStats() {
+        var fragment = DeckStatsFragment.newInstance()
+        supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, fragment)
+            ?.addToBackStack("editCard")
+            ?.commit()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -51,7 +51,7 @@ class CardListFragment : Fragment() {
                 true
             }
             R.id.stats_button -> {
-                // Show stats menu
+                listener?.onDeckStats()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -107,6 +107,7 @@ class CardListFragment : Fragment() {
         fun onCardAdd()
         fun onBeginStudy()
         fun onEditCard()
+        fun onDeckStats()
     }
 
 /*
