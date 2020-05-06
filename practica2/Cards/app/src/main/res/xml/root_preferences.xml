@@ -2,12 +2,17 @@
     <PreferenceCategory app:title="@string/deck_list_title">
 
         <EditTextPreference
-            app:key="signature"
+            app:key="max_tarjetas"
             app:title="@string/max_tarjetas_text"
+            app:defaultValue="20" />
             app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/activate_blackboard" />
+            app:key="remember_me"
+            app:title="@string/remember_me_login"
+            app:defaultValue="false" />
+        <EditTextPreference
+            app:key="logged_user"
+            app:defaultValue="null" />
 
     </PreferenceCategory>
 </PreferenceScreen>

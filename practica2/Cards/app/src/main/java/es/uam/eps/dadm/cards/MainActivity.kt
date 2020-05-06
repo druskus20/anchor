@@ -2,6 +2,7 @@ package es.uam.eps.dadm.cards
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
+import es.uam.eps.dadm.cards.ui.login.LoginActivity
+import es.uam.eps.dadm.cards.ui.login.LoginViewModel
+import es.uam.eps.dadm.cards.ui.login.LoginViewModelFactory
 import java.io.FileNotFoundException
 
 
@@ -118,8 +122,15 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
 
         Log.d("ANDROIDDDO", reference.child("key").setValue("Hello World").exception.toString())
 
+        var logged = false      // Get it from the login viewmodel
 
-        try {
+        var loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
+            .get(LoginViewModel::class.java)
+
+
+
+        // OLD: Load data from a file
+        /*try {
             val fis = openFileInput(savefile)
             mainActivityViewModel.loadSave(fis)
             fis.close()
@@ -128,8 +139,7 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
             val view = findViewById<View>(android.R.id.content)
             Snackbar.make(view, "No se ha ENCOTNRADO FICHEOR", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-        }
-
+        }*/
     }
 
     override fun onPause() {
