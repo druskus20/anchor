@@ -102,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun firebase_login (username : String, password: String): Boolean {
+    private fun firebase_login (username : String, password: String) {
 
         auth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
@@ -129,8 +129,8 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, getString(R.string.login_error) , Toast.LENGTH_SHORT).show()
                 }
             }
-
     }
+
     private fun firebase_register(username : String, password : String) {
         auth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
@@ -152,7 +152,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
-
     }
 }
 
@@ -170,3 +169,5 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
 }
+
+

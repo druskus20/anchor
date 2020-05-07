@@ -101,6 +101,7 @@
     <string name="register_success">User registered, login now</string>
     <string name="login_success">"Logged as user: "</string>
     <string name="login_error">Incorrect user or password</string>
+    <string name="name_app">Cards</string>
 
 
 </resources>
