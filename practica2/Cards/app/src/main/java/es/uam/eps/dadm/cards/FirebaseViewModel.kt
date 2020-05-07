@@ -1,6 +1,5 @@
 package es.uam.eps.dadm.cardfire
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot

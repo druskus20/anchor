@@ -2,20 +2,14 @@ package es.uam.eps.dadm.cards
 
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
-import es.uam.eps.dadm.cards.ui.login.LoggedInUserView
-import es.uam.eps.dadm.cards.ui.login.LoginActivity
 import es.uam.eps.dadm.cards.ui.login.LoginViewModel
 import es.uam.eps.dadm.cards.ui.login.LoginViewModelFactory
-import java.io.FileNotFoundException
 
 
 class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInteractionListener,

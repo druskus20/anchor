@@ -29,13 +29,26 @@ class CardShowFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var max_cards : Int = 0
+        var total_cards = 0
+
+        // Smart cast fix
+        var temp  = activity?.applicationContext?.let { SettingsActivity.getMaxTarjetas(it)?.toInt() }
+        if (temp == null) {
+            temp = 0
+        }
+        max_cards = temp
+
+
         if (cardShowViewModel.studyCardList.size == 0) {
             // Creates the list with the cards to study TODAY
             val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
             mainViewModel.activeDeck.cards.forEach {
                 val diff = dateTimeComparator.compare(it.nextPracticeDate, DateTime.now())
-                if (diff == 0) {
+                if ((diff <= 0) && (total_cards < max_cards)) {
                     cardShowViewModel.studyCardList.add(it)
+                    total_cards++
                 }
             }
         }
