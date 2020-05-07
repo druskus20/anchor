@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1059002955139:android:2f9a7967205663ca7cf2b6",
+        "mobilesdk_app_id": "1:1059002955139:android:088653b09728e63f7cf2b6",
         "android_client_info": {
-          "package_name": "es.uam.eps.dadm.cards"
+          "package_name": "es.uam.eps.dadm.cardspedroburgos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1059002955139-pbo1ikqimmnhp3kmr2h81deknf3cd0dg.apps.googleusercontent.com",
+          "client_id": "1059002955139-hq6dpviffira49jfrvadjqd1k2o8cqq6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "es.uam.eps.dadm.cards",
+            "package_name": "es.uam.eps.dadm.cardspedroburgos",
             "certificate_hash": "942599712a3df0adf23c0434094a384acbcf3682"
           }
         },

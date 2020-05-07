@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="es.uam.eps.dadm.cards">
+    package="es.uam.eps.dadm.cardspedroburgos">
 
     <application
         android:allowBackup="true"
@@ -11,25 +11,25 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="es.uam.eps.dadm.cardspedroburgos.ui.login.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name="es.uam.eps.dadm.cardspedroburgos.MainActivity">
 
         </activity>
         <activity
 
-            android:name=".SettingsActivity"
+            android:name="es.uam.eps.dadm.cardspedroburgos.SettingsActivity"
             android:label="@string/title_activity_settings">
 
         </activity>
 
         <meta-data android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity"/>
+            android:value="es.uam.eps.dadm.cardspedroburgos.MainActivity"/>
     </application>
 
 </manifest>
