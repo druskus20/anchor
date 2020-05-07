@@ -105,22 +105,20 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
             supportActionBar?.title=it
         })
 
-        Log.d("DATACLASS", "CONEXION")
 
-
-        Log.d("ANDROIDDDO", "CONEXION")
+        /*
+        Log.d("FIREBASE", "CONEXION")
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-        Log.d("ANDROIDDDO", database.toString())
+        Log.d("FIREBASE", database.toString())
         val reference = database.getReference("mensaje")
-        Log.d("ANDROIDDDO", reference.toString())
+        Log.d("FIREBASE", reference.toString())
+        Log.d("FIREBASE", reference.child("key").setValue("Hello World").exception.toString())*/
 
-        Log.d("ANDROIDDDO", reference.child("key").setValue("Hello World").exception.toString())
-
+        /*
         var logged = false      // Get it from the login viewmodel
-
         var loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
-
+        */
 
 
         // OLD: Load data from a file

@@ -62,7 +62,7 @@
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -97,6 +97,10 @@
     <string name="deck_stats_n_hard_label">Number of hard responses</string>
     <string name="deck_stats_n_normal">Number of normal responses</string>
     <string name="deck_stats_n_normal_label">Number of normal responses</string>
+    <string name="register_error">Error, register could not be completed</string>
+    <string name="register_success">User registered, login now</string>
+    <string name="login_success">"Logged as user: "</string>
+    <string name="login_error">Incorrect user or password</string>
 
 
 </resources>
