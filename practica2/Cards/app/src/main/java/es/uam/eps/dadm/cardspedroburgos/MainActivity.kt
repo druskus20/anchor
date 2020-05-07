@@ -19,10 +19,11 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
     private val savefile = "cards.save"
 
     private val mainActivityViewModel by lazy {
-        // !!!!!! Forzado
         ViewModelProviders.of(this).get(MainViewModel::class.java)
         //ViewModelProviders.of(this).get(DeckListViewModel::class.java)
     }
+
+
 
     override fun onCardAddNoBackStack() {
         var fragment = CardListFragment.newInstance()
@@ -106,13 +107,16 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         })
 
 
+
+
         /*
         Log.d("FIREBASE", "CONEXION")
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         Log.d("FIREBASE", database.toString())
         val reference = database.getReference("mensaje")
         Log.d("FIREBASE", reference.toString())
-        Log.d("FIREBASE", reference.child("key").setValue("Hello World").exception.toString())*/
+        Log.d("FIREBASE", reference.child("key").setValue("Hello World").exception.toString())
+        */
 
         /*
         var logged = false      // Get it from the login viewmodel
@@ -138,6 +142,7 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         super.onPause()
         val fos = openFileOutput(savefile, Context.MODE_PRIVATE)
         mainActivityViewModel.saveData(fos)
+
         fos.close()
     }
 }

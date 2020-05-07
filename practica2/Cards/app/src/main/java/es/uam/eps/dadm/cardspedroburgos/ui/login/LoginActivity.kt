@@ -22,6 +22,7 @@ import es.uam.eps.dadm.cardspedroburgos.MainActivity
 import es.uam.eps.dadm.cardspedroburgos.R
 import es.uam.eps.dadm.cardspedroburgos.SettingsActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import java.lang.RuntimeException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -114,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, getString(R.string.login_success) + " " + username.toString() , Toast.LENGTH_SHORT).show()
 
                     // Set logged user
-                    SettingsActivity.setLoggedUser(applicationContext, username)
+                    SettingsActivity.setLoggedUser(applicationContext, username.replace(".", ","))
                     SettingsActivity.setRememberMe(applicationContext, switch1.isChecked)
 
                     // Launch next activity
@@ -132,13 +133,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun firebase_register(username : String, password : String) {
+
+
         auth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     loading.visibility = View.INVISIBLE
+
+                    val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+                    val reference = database.getReference(username.replace(".", ",") + "/Decks")
+                    reference.child("Deck").setValue("empty").exception.toString()
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("LOGIN", "createUserWithEmail:success")
-                    val user = auth.currentUser
                     Toast.makeText(applicationContext, getString(R.string.register_success) , Toast.LENGTH_SHORT).show()
                 } else {
                     loading.visibility = View.INVISIBLE

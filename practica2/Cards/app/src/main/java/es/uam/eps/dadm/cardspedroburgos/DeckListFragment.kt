@@ -21,16 +21,13 @@ class DeckListFragment : Fragment(){
     var listener: onDeckListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
-        // !!!!!! Forzado
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
