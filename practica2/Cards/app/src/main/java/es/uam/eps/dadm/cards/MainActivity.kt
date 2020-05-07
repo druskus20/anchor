@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
+import es.uam.eps.dadm.cards.ui.login.LoggedInUserView
 import es.uam.eps.dadm.cards.ui.login.LoginActivity
 import es.uam.eps.dadm.cards.ui.login.LoginViewModel
 import es.uam.eps.dadm.cards.ui.login.LoginViewModelFactory
@@ -28,8 +29,6 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         ViewModelProviders.of(this).get(MainViewModel::class.java)
         //ViewModelProviders.of(this).get(DeckListViewModel::class.java)
     }
-
-
 
     override fun onCardAddNoBackStack() {
         var fragment = CardListFragment.newInstance()
@@ -94,8 +93,6 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         // If there is already a fragment created
         var fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
@@ -113,6 +110,9 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         mainActivityViewModel.actionbarTitle.observe(this, Observer {
             supportActionBar?.title=it
         })
+
+        Log.d("DATACLASS", "CONEXION")
+
 
         Log.d("ANDROIDDDO", "CONEXION")
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()

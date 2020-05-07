@@ -2,6 +2,7 @@ package es.uam.eps.dadm.cards
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
@@ -20,6 +21,8 @@ class SettingsActivity : AppCompatActivity() {
             .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
+        Log.d("PREFFERENCES", R.xml.root_preferences.toString())
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
     }
@@ -61,17 +64,17 @@ class SettingsActivity : AppCompatActivity() {
             editor.commit()
         }
 
-        fun getRememberMe(context: Context): String? {
+        fun getRememberMe(context: Context): Boolean? {
             return PreferenceManager
                 .getDefaultSharedPreferences(context)
-                .getString("remember_me", "false")
+                .getBoolean("remember_me", false)
         }
 
-        fun setRememberMe(context: Context, max: String) {
+        fun setRememberMe(context: Context, max: Boolean) {
             val sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context)
             val editor = sharedPreferences.edit()
-            editor.putString(SettingsActivity.remember_me, max)
+            editor.putBoolean(SettingsActivity.remember_me, max)
             editor.commit()
         }
 

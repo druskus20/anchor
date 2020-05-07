@@ -105,8 +105,11 @@ class DeckListFragment : Fragment(){
             }
             R.id.logout_button -> {
                 val intent = Intent(activity, LoginActivity::class.java)
-                activity?.finish()
-                startActivity(intent)
+                activity?.let {
+                    SettingsActivity.setRememberMe(it.applicationContext, false)
+                    startActivity(intent)
+                    it.finish()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

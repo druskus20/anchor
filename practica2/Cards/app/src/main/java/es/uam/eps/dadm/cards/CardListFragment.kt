@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import es.uam.eps.dadm.cards.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_card_list.*
 
 
@@ -42,6 +43,7 @@ class CardListFragment : Fragment() {
         inflater.inflate(R.menu.card_list_menu , menu)
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.settings_button -> {
@@ -52,6 +54,16 @@ class CardListFragment : Fragment() {
             }
             R.id.stats_button -> {
                 listener?.onDeckStats()
+                true
+            }
+            R.id.logout_button -> {
+                val intent = Intent(activity, LoginActivity::class.java)
+                activity?.let {
+                    SettingsActivity.setRememberMe(it.applicationContext, false)
+                    startActivity(intent)
+                    it.finish()
+                }
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -17,6 +17,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import es.uam.eps.dadm.cards.MainActivity
 import es.uam.eps.dadm.cards.R
+import es.uam.eps.dadm.cards.SettingsActivity
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -32,6 +34,14 @@ class LoginActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+
+        // Skip the login screen if necessary
+        if ( SettingsActivity.getRememberMe(applicationContext) == true){
+            // Launch next activity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -58,9 +68,15 @@ class LoginActivity : AppCompatActivity() {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
+
+                // Set logged user
+                SettingsActivity.setLoggedUser(applicationContext, username.text.toString())
+                SettingsActivity.setRememberMe(applicationContext, switch1.isChecked)
+
                 // Launch next activity
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             }
             setResult(Activity.RESULT_OK)
 
@@ -105,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+
     }
 }
 
