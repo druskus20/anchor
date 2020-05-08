@@ -108,8 +108,6 @@ class CardListFragment : Fragment() {
         firebaseCardsViewModel.setReference("$referencePath/Cards")
         firebaseCardsViewModel.cards.observe(this, observer)
 
-        Snackbar.make(view, referencePath, Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show()
 
         return view
     }

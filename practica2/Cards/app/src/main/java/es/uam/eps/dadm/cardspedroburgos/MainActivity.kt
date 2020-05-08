@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.FirebaseDatabase
 import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginViewModel
 import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginViewModelFactory
+import net.danlew.android.joda.JodaTimeAndroid
 
 
 class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInteractionListener,
@@ -89,6 +90,7 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        JodaTimeAndroid.init(applicationContext)
         setContentView(R.layout.activity_main)
 
         // If there is already a fragment created

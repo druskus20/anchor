@@ -12,6 +12,8 @@ class CardShowViewModel : ViewModel() {
     var end = false
     var answered = false
 
+
+
     init {
         Log.d(TAG, "CardsViewModel created")
     }
@@ -20,4 +22,6 @@ class CardShowViewModel : ViewModel() {
         super.onCleared()
         Log.d(TAG, "CardsViewModel is about to be destroyed")
     }
+
+
 }

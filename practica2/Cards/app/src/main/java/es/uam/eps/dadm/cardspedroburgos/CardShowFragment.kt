@@ -2,12 +2,17 @@ package es.uam.eps.dadm.cardspedroburgos
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_card_show.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeComparator
@@ -16,7 +21,7 @@ import org.joda.time.DateTimeComparator
 class CardShowFragment : Fragment() {
     private var currentCard = Card("None", "None")
     var listener: CardShowFragment.onCardShowFragmentInteractionListener? = null
-
+    var total_cards = 0
     // Specific viewModel for hiding elements
     private val cardShowViewModel: CardShowViewModel by lazy {
         ViewModelProviders.of(this).get(CardShowViewModel::class.java)
@@ -27,11 +32,22 @@ class CardShowFragment : Fragment() {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
 
+
+    private val referencePath by lazy {
+        val user = activity?.applicationContext?.let { SettingsActivity.getLoggedUser(it) }
+        val deckid = mainViewModel.activeDeck.id
+        "$user/Decks/$deckid/Cards"
+    }
+
+    private val databaseReference by lazy {
+        FirebaseDatabase.getInstance().getReference(referencePath)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         var max_cards : Int = 0
-        var total_cards = 0
+
 
         // Smart cast fix
         var temp  = activity?.applicationContext?.let { SettingsActivity.getMaxTarjetas(it)?.toInt() }
@@ -40,18 +56,45 @@ class CardShowFragment : Fragment() {
         }
         max_cards = temp
 
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
+                var listOfCards: MutableList<Card> = mutableListOf<Card>()
+                val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
+                for (card in dataSnapshot.children) {
+                    var newCard = card.getValue(Card::class.java)
+                    if (newCard != null) {
+                        val diff = dateTimeComparator.compare(
+                            DateTime(newCard.nextPracticeDate),
+                            DateTime.now()
+                        )
+
+
+                        if ((diff <= 0) && (total_cards < max_cards)) {
+
+                            listOfCards.add(newCard)
+                            total_cards++
+                        }
+                    }
+                }
+                cardShowViewModel.studyCardList.addAll(listOfCards)
+            }
+            override fun onCancelled(databaseError: DatabaseError) { // ...
+            }
+        })
+
+        /*
         if (cardShowViewModel.studyCardList.size == 0) {
             // Creates the list with the cards to study TODAY
             val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
             mainViewModel.activeDeck.cards.forEach {
-                val diff = dateTimeComparator.compare(it.nextPracticeDate, DateTime.now())
+                val diff = dateTimeComparator.compare(DateTime(it.nextPracticeDate), DateTime.now())
                 if ((diff <= 0) && (total_cards < max_cards)) {
                     cardShowViewModel.studyCardList.add(it)
                     total_cards++
                 }
             }
-        }
+        }*/
     }
 
     override fun onCreateView(
@@ -62,6 +105,9 @@ class CardShowFragment : Fragment() {
         // Call activity method to show fab ---> CANT BE IN onCreate because of activity destroy on rotation
         //(activity as MainActivity).hideAddButton()
         super.onCreateView(inflater, container, savedInstanceState)
+
+
+
 
         return inflater.inflate(R.layout.fragment_card_show, container, false)
     }
@@ -85,7 +131,9 @@ class CardShowFragment : Fragment() {
 
         mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.show_card_title)
         // If there are no more cards to study
-        if (cardShowViewModel.studyCardList.size == 0){
+        for (card in cardShowViewModel.studyCardList)
+            Log.d("INSANE", card.toString())
+        if (total_cards == 0){
             view?.let {
                 Snackbar.make(it, getString(R.string.no_cards_study_msg), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -176,8 +224,9 @@ class CardShowFragment : Fragment() {
     }
 
     companion object {
+        private const val ARG_CARDS_IDS = "card_list"
         fun newInstance(): CardShowFragment {
-            return CardShowFragment()
+            return  CardShowFragment()
         }
     }
 }
