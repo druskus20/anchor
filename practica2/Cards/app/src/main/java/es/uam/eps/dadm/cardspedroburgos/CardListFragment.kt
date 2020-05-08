@@ -23,7 +23,7 @@ class CardListFragment : Fragment() {
     private lateinit var cardAdapter: CardAdapter
 
     // !!!
-    var listener: onCardListFragmentInteractionListener? = null
+    var listener: OnCardListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
 
@@ -134,7 +134,7 @@ class CardListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as onCardListFragmentInteractionListener?
+        listener = context as OnCardListFragmentInteractionListener?
     }
 
     override fun onDetach() {
@@ -142,7 +142,7 @@ class CardListFragment : Fragment() {
         listener = null
     }
 
-    interface onCardListFragmentInteractionListener {
+    interface OnCardListFragmentInteractionListener {
         fun onCardAdd()
         fun onBeginStudy()
         fun onEditCard()

@@ -45,23 +45,15 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     companion object {
-        val max_tarjetas = "max_tarjetas"
-        val remember_me = "remember_me"
-        val logged_user = "logged_user"
+        private val max_tarjetas = "max_tarjetas"
+        private val remember_me = "remember_me"
+        private val logged_user = "logged_user"
 
 
         fun getMaxTarjetas(context: Context): String? {
             return PreferenceManager
                 .getDefaultSharedPreferences(context)
                 .getString("max_tarjetas", "20")
-        }
-
-        fun setMaxTarjetas(context: Context, max: String) {
-            val sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(context)
-            val editor = sharedPreferences.edit()
-            editor.putString(SettingsActivity.max_tarjetas, max)
-            editor.commit()
         }
 
         fun getRememberMe(context: Context): Boolean? {
@@ -74,7 +66,7 @@ class SettingsActivity : AppCompatActivity() {
             val sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context)
             val editor = sharedPreferences.edit()
-            editor.putBoolean(SettingsActivity.remember_me, max)
+            editor.putBoolean(remember_me, max)
             editor.commit()
         }
 
@@ -88,7 +80,7 @@ class SettingsActivity : AppCompatActivity() {
             val sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context)
             val editor = sharedPreferences.edit()
-            editor.putString(SettingsActivity.logged_user, max)
+            editor.putString(logged_user, max)
             editor.commit()
         }
     }

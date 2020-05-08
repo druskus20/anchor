@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_deck_stats.*
 
 class DeckStatsFragment : Fragment() {
-    private var card = Card(question = "none", answer = "none")
+
     lateinit var barDataSet : BarDataSet
     lateinit var barData : BarData
 
@@ -56,17 +56,17 @@ class DeckStatsFragment : Fragment() {
 
                     if (d != null) {
                         if (d.id == mainViewModel.activeDeck.id) {
-                            deckStatsViewModel.totalEasy = d.total_easy
-                            deckStatsViewModel.totalDoubt = d.total_dudo
-                            deckStatsViewModel.totalHard = d.total_hard
+                            deckStatsViewModel.totalEasy = d.totalEasy
+                            deckStatsViewModel.totalDoubt = d.totalDudo
+                            deckStatsViewModel.totalHard = d.totalHard
                             deckStatsViewModel.totalCards = d.numCards
                             updateUI()
                             barDataSet = BarDataSet(getData(), getString(R.string.graph_label))
                             barDataSet.barBorderWidth = 0.9f
                             barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
 
-                            barData = BarData(barDataSet);
-                            barChart.data = barData;
+                            barData = BarData(barDataSet)
+                            barChart.data = barData
                             break
                         }
                     }
@@ -98,12 +98,12 @@ class DeckStatsFragment : Fragment() {
 
 
 
-        var xAxis = barChart.getXAxis();
+        val xAxis = barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
 
-        var classes =  arrayOf(getString(R.string.label_easy),getString(R.string.label_doubt),getString(R.string.label_hard))
-        var formatter = IndexAxisValueFormatter(classes)
-        xAxis.granularity = 1f;
+        val classes =  arrayOf(getString(R.string.label_easy),getString(R.string.label_doubt),getString(R.string.label_hard))
+        val formatter = IndexAxisValueFormatter(classes)
+        xAxis.granularity = 1f
         xAxis.valueFormatter = formatter
 
 

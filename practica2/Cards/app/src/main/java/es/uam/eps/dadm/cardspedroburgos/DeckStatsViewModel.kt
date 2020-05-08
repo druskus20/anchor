@@ -1,8 +1,6 @@
 package es.uam.eps.dadm.cardspedroburgos
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-
 
 
 class DeckStatsViewModel : ViewModel() {

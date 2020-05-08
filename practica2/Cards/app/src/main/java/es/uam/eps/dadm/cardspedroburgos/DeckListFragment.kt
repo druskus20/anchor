@@ -3,10 +3,7 @@ package es.uam.eps.dadm.cardspedroburgos
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.TextView
@@ -16,10 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_deck_list.*
 
@@ -27,7 +21,7 @@ class DeckListFragment : Fragment(){
     private lateinit var deckRecyclerView: RecyclerView
     private lateinit var deckAdapter: DeckAdapter
 
-    var listener: onDeckListFragmentInteractionListener? = null
+    var listener: OnDeckListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
@@ -103,7 +97,7 @@ class DeckListFragment : Fragment(){
             val name = input.text.toString()
 
             val deck = Deck(name)
-            databaseReference?.child(deck.id)?.setValue(deck)
+            databaseReference.child(deck.id).setValue(deck)
 
             //deckAdapter.notifyDataSetChanged() MOVED TO EVENTLISTENER
 
@@ -147,7 +141,7 @@ class DeckListFragment : Fragment(){
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as onDeckListFragmentInteractionListener?
+        listener = context as OnDeckListFragmentInteractionListener?
     }
 
     override fun onDetach() {
@@ -156,7 +150,7 @@ class DeckListFragment : Fragment(){
     }
 
 
-    interface onDeckListFragmentInteractionListener {
+    interface OnDeckListFragmentInteractionListener {
         fun onDeckSelected()
     }
 

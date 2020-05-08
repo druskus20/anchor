@@ -1,5 +1,4 @@
 package es.uam.eps.dadm.cardspedroburgos
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
@@ -9,18 +8,18 @@ import com.google.firebase.database.ValueEventListener
 
 
 class FirebaseDecksViewModel : ViewModel() {
-    lateinit var reference_name : String
+    private lateinit var referenceName : String
     var decks: MutableLiveData<List<Deck>> = MutableLiveData()
         private set
         get() {
             if (field.value == null) {
-                FirebaseDatabase.getInstance().getReference(reference_name)
+                FirebaseDatabase.getInstance().getReference(referenceName)
                     .addValueEventListener(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError) {}
                         override fun onDataChange(p0: DataSnapshot) {
-                            var listOfDecks: MutableList<Deck> = mutableListOf()
+                            val listOfDecks: MutableList<Deck> = mutableListOf()
                             for (deck in p0.children) {
-                                var newDeck = deck.getValue(Deck::class.java)
+                                val newDeck = deck.getValue(Deck::class.java)
                                 if (newDeck != null)
                                     listOfDecks.add(newDeck)
                             }
@@ -32,7 +31,7 @@ class FirebaseDecksViewModel : ViewModel() {
         }
 
     fun setReference(user_reference_name: String) {
-        reference_name = user_reference_name
+        referenceName = user_reference_name
     }
 
 

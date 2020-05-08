@@ -3,7 +3,6 @@ package es.uam.eps.dadm.cardspedroburgos
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +20,8 @@ import org.joda.time.DateTimeComparator
 
 class CardShowFragment : Fragment() {
     private var currentCard = Card("None", "None")
-    var listener: CardShowFragment.onCardShowFragmentInteractionListener? = null
-    var total_cards = 0
+    var listener: OnCardShowFragmentInteractionListener? = null
+    var totalCards = 0
 
     // Specific viewModel for hiding elements
     private val cardShowViewModel: CardShowViewModel by lazy {
@@ -48,7 +47,7 @@ class CardShowFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var max_cards : Int = 0
+        var maxCards = 0
 
 
         // Smart cast fix
@@ -56,7 +55,7 @@ class CardShowFragment : Fragment() {
         if (temp == null) {
             temp = 0
         }
-        max_cards = temp
+        maxCards = temp
 
         // I hate asyncronous calls
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -64,7 +63,7 @@ class CardShowFragment : Fragment() {
                 if (cardShowViewModel.init)
                     return
                 cardShowViewModel.init = true
-                val listOfCards: MutableList<Card> = mutableListOf<Card>()
+                val listOfCards: MutableList<Card> = mutableListOf()
                 val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
                 for (card in dataSnapshot.children) {
                     val newCard = card.getValue(Card::class.java)
@@ -73,15 +72,16 @@ class CardShowFragment : Fragment() {
                             DateTime(newCard.nextPracticeDate),
                             DateTime.now()
                         )
-                        if ((diff <= 0) && (total_cards < max_cards)) {
+                        if ((diff <= 0) && (totalCards < maxCards)) {
+                            totalCards++
                             listOfCards.add(newCard)
                         }
                     }
                 }
 
                 cardShowViewModel.studyCardList.addAll(listOfCards)
-                total_cards = cardShowViewModel.studyCardList.size
-                if (total_cards == 0){
+                totalCards = cardShowViewModel.studyCardList.size
+                if (totalCards == 0){
                     view?.let {
                         Snackbar.make(it, getString(R.string.no_cards_study_msg), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show()
@@ -123,13 +123,13 @@ class CardShowFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_card_show, container, false)
     }
 
-    interface onCardShowFragmentInteractionListener {
+    interface OnCardShowFragmentInteractionListener {
         fun onEndStudy()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as onCardShowFragmentInteractionListener?
+        listener = context as OnCardShowFragmentInteractionListener?
     }
 
     override fun onDetach() {
@@ -228,15 +228,15 @@ class CardShowFragment : Fragment() {
     }
 
     // Updates the card info based on the quality received
-    fun firebaseCardUpdate(card : Card){
+    private fun firebaseCardUpdate(card : Card){
         // Temporal copy that we push to the remote
 
-        var currentDeck = mainViewModel.activeDeck
+        val currentDeck = mainViewModel.activeDeck
         currentCard.update()
         currentDeck.updateDeck(currentCard.quality)
 
-        var cardReference = FirebaseDatabase.getInstance().getReference("$referencePath/Cards/${currentCard.id}")
-        var deckReference = FirebaseDatabase.getInstance().getReference("$referencePath")
+        val cardReference = FirebaseDatabase.getInstance().getReference("$referencePath/Cards/${currentCard.id}")
+        val deckReference = FirebaseDatabase.getInstance().getReference(referencePath)
 
         cardReference.child("quality").setValue(currentCard.quality)
         cardReference.child("easiness").setValue(currentCard.easiness)
@@ -245,15 +245,15 @@ class CardShowFragment : Fragment() {
         cardReference.child("nextPracticeDate").setValue(currentCard.nextPracticeDate)
 
 
-        deckReference.child("total_easy").setValue(currentDeck.total_easy)
-        deckReference.child("total_dudo").setValue(currentDeck.total_dudo)
-        deckReference.child("total_hard").setValue(currentDeck.total_hard)
+        deckReference.child("total_easy").setValue(currentDeck.totalEasy)
+        deckReference.child("total_dudo").setValue(currentDeck.totalDudo)
+        deckReference.child("total_hard").setValue(currentDeck.totalHard)
         deckReference.child("total").setValue(currentDeck.total)
 
     }
 
     companion object {
-        private const val ARG_CARDS_IDS = "card_list"
+
         fun newInstance(): CardShowFragment {
             return  CardShowFragment()
         }

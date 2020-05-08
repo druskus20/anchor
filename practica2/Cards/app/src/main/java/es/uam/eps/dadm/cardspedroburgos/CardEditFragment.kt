@@ -68,7 +68,7 @@ class CardEditFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                cardEditViewModel.question_text = s.toString()
+                cardEditViewModel.questionText = s.toString()
             //    card.question = s.toString()
             }
         }
@@ -77,7 +77,7 @@ class CardEditFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                cardEditViewModel.answer_text = s.toString()
+                cardEditViewModel.answerText = s.toString()
             //    card.answer = s.toString()
             }
         }
@@ -85,10 +85,10 @@ class CardEditFragment : Fragment() {
         // finish changes button
         finish_edit_button.setOnClickListener {
 
-            if (cardEditViewModel.question_text != "")
-                databaseReference.child("question").setValue(cardEditViewModel.question_text)
-            if (cardEditViewModel.answer_text != "")
-                databaseReference.child("answer").setValue(cardEditViewModel.answer_text)
+            if (cardEditViewModel.questionText != "")
+                databaseReference.child("question").setValue(cardEditViewModel.questionText)
+            if (cardEditViewModel.answerText != "")
+                databaseReference.child("answer").setValue(cardEditViewModel.answerText)
             // !!! If there is stack, go back, if not, render the fragment and add it to the stack
             //  so we wont go back to the Add fragment
             activity?.supportFragmentManager?.apply {

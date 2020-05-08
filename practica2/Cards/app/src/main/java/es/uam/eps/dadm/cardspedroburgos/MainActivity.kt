@@ -1,23 +1,17 @@
 package es.uam.eps.dadm.cardspedroburgos
 
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.database.FirebaseDatabase
-import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginViewModel
-import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginViewModelFactory
 import net.danlew.android.joda.JodaTimeAndroid
 
 
-class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInteractionListener,
-                                          DeckListFragment.onDeckListFragmentInteractionListener,
-                                          CardListFragment.onCardListFragmentInteractionListener,
-                                          CardAddFragment.onCardAddFragmentInteractionListener {
-    private val savefile = "cards.save"
+class MainActivity : AppCompatActivity(), CardShowFragment.OnCardShowFragmentInteractionListener,
+                                          DeckListFragment.OnDeckListFragmentInteractionListener,
+                                          CardListFragment.OnCardListFragmentInteractionListener,
+                                          CardAddFragment.OnCardAddFragmentInteractionListener {
 
     private val mainActivityViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -25,30 +19,30 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
     }
 
     override fun onCardAddNoBackStack() {
-        var fragment = CardListFragment.newInstance()
+        val fragment = CardListFragment.newInstance()
         supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.fragment_container, fragment)
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
             // !!! GO BACK IN THE STACK
-            ?.addToBackStack("CardList")
+            .addToBackStack("CardList")
             .commit()
     }
 
      override fun onDeckSelected() {
-    var fragment = CardListFragment.newInstance()
+    val fragment = CardListFragment.newInstance()
          supportFragmentManager
-             ?.beginTransaction()
-             ?.replace(R.id.fragment_container, fragment)
+             .beginTransaction()
+             .replace(R.id.fragment_container, fragment)
              .addToBackStack("CardList")
              .commit()
     }
     override fun onCardAdd() {
-        var fragment = CardAddFragment.newInstance()
+        val fragment = CardAddFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragment_container, fragment)
+            .replace(R.id.fragment_container, fragment)
             // ?.addToBackStack("Decks") !!!
-            ?.addToBackStack( "CardAdd" )
+            .addToBackStack( "CardAdd" )
             .commit()
     }
 
@@ -57,29 +51,29 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
     }
 
     override fun onBeginStudy() {
-        var fragment = CardShowFragment.newInstance()
+        val fragment = CardShowFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragment_container, fragment)
-            ?.addToBackStack("Study")
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack("Study")
             .commit()
     }
 
     override fun onEditCard(){
-        var fragment = CardEditFragment.newInstance()
+        val fragment = CardEditFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragment_container, fragment)
-            ?.addToBackStack("editCard")
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack("editCard")
             .commit()
     }
 
     override fun onDeckStats() {
-        var fragment = DeckStatsFragment.newInstance()
+        val fragment = DeckStatsFragment.newInstance()
         supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragment_container, fragment)
-            ?.addToBackStack("editCard")
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack("editCard")
             .commit()
     }
 

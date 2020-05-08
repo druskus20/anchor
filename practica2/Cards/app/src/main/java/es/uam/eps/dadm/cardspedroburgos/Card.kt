@@ -1,11 +1,11 @@
 package es.uam.eps.dadm.cardspedroburgos
 
-import net.danlew.android.joda.JodaTimeAndroid
 import org.joda.time.DateTime
+import java.io.Serializable
 import java.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
-import java.io.Serializable
+
 // Base class for any card
 open class Card (var question: String = "", var answer: String = "",  val id: String = UUID.randomUUID().toString(), val date: String = DateTime.now().toLocalDate().toString()):  Serializable {
     var repetitions = 0
@@ -21,22 +21,6 @@ open class Card (var question: String = "", var answer: String = "",  val id: St
 
 
 
-    // Shows the anwser and stores the input quality
-    open fun show() {
-        println(question)
-
-        print("\tINTRO para ver la respuesta: ")
-        readLine()
-
-        println("\t$answer")
-
-        do {
-            print("\tTeclea 0 (Dificil) 3 (Dudo) 5 (Facil): ")
-            quality = readLine().let{
-                Quality.intToQuality(it?.toIntOrNull())
-            }
-        } while(quality == Quality.NO)
-    }
 
     // Updates the card info based on the quality received
     fun update(){

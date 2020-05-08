@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_card_add.*
 class CardAddFragment : Fragment() {
 
     private var card = Card(question = "none", answer = "none")
-    var listener: onCardAddFragmentInteractionListener? = null
+    private var listener: OnCardAddFragmentInteractionListener? = null
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
     }
@@ -36,7 +36,7 @@ class CardAddFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as onCardAddFragmentInteractionListener?
+        listener = context as OnCardAddFragmentInteractionListener?
     }
 
     override fun onDetach() {
@@ -44,7 +44,7 @@ class CardAddFragment : Fragment() {
         listener = null
     }
 
-    interface onCardAddFragmentInteractionListener {
+    interface OnCardAddFragmentInteractionListener {
         fun onCardAddNoBackStack()
     }
     

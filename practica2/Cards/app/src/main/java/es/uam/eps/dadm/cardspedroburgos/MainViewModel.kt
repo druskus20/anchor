@@ -1,9 +1,6 @@
 package es.uam.eps.dadm.cardspedroburgos
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.io.*
-
 
 
 class MainViewModel: ViewModel() {

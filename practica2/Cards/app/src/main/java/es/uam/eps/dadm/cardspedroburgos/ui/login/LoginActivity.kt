@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -18,12 +17,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import es.uam.eps.dadm.cardspedroburgos.Deck
 import es.uam.eps.dadm.cardspedroburgos.MainActivity
 import es.uam.eps.dadm.cardspedroburgos.R
 import es.uam.eps.dadm.cardspedroburgos.SettingsActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import java.lang.RuntimeException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -93,18 +90,18 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                val result = firebase_login(username.text.toString(), password.text.toString())
+                val result = firebaseLogin(username.text.toString(), password.text.toString())
 
             }
             register.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                firebase_register(username.text.toString(), password.text.toString())
+                firebaseRegister(username.text.toString(), password.text.toString())
 
             }
         }
     }
 
-    private fun firebase_login (username : String, password: String) {
+    private fun firebaseLogin (username : String, password: String) {
 
         auth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener(this) { task ->
@@ -113,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("LOGIN", "signInWithEmail:success")
 
-                    Toast.makeText(applicationContext, getString(R.string.login_success) + " " + username.toString() , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, getString(R.string.login_success) + " " + username, Toast.LENGTH_SHORT).show()
 
                     // Set logged user
                     SettingsActivity.setLoggedUser(applicationContext, username.replace(".", ","))
@@ -133,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun firebase_register(username : String, password : String) {
+    private fun firebaseRegister(username : String, password : String) {
 
 
         auth.createUserWithEmailAndPassword(username, password)
@@ -158,9 +155,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
-    }
+
 }
 
 /**
