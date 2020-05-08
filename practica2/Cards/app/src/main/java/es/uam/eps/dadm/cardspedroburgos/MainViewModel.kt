@@ -8,14 +8,14 @@ import java.io.*
 
 class MainViewModel: ViewModel() {
     private  val tag = "MainActivityViewModel"
-    var decks =   mutableListOf<Deck>()
+
     lateinit var activeDeck : Deck
     lateinit var activeCard : Card
     val actionbarTitle = MutableLiveData<String>()
 
 
 
-
+/*
 
     // Saves the app data into a file
     fun saveData(fos : FileOutputStream) {
@@ -56,4 +56,6 @@ class MainViewModel: ViewModel() {
             return
         }
     }
+    */
+
 }

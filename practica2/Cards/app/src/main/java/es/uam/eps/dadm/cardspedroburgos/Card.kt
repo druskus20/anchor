@@ -6,14 +6,14 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 import java.io.Serializable
 // Base class for any card
-open class Card (var question: String, var answer: String,  val id: String = UUID.randomUUID().toString(), val date: String = DateTime.now().toLocalDate().toString()):  Serializable {
+open class Card (var question: String = "", var answer: String = "",  val id: String = UUID.randomUUID().toString(), val date: String = DateTime.now().toLocalDate().toString()):  Serializable {
     private var repetitions = 0
     private var interval = 1
     private var easiness = 2.5
     var expanded = false
     // This ones should probably be private but
     //  for simplicity reasons they are not (currently)
-    var nextPracticeDate: DateTime = DateTime.now()
+    var nextPracticeDate: Date = DateTime.now().toDate()
     var quality : Quality = Quality.NO
 
 
@@ -49,8 +49,9 @@ open class Card (var question: String, var answer: String,  val id: String = UUI
         else                        interval = (interval*easiness).roundToInt()
 
         // Set nextPracticeDate
-        nextPracticeDate = nextPracticeDate.plusDays(interval)
-    }
+        val temp = DateTime(nextPracticeDate)
+        nextPracticeDate = temp.plusDays(interval).toDate()
 
+    }
 
 }

@@ -143,7 +143,7 @@ class LoginActivity : AppCompatActivity() {
 
                     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
                     val reference = database.getReference(username.replace(".", ",") + "/Decks")
-                    reference.child("Deck").setValue(Deck("Long click to edit this deck")).exception.toString()
+
 
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("LOGIN", "createUserWithEmail:success")

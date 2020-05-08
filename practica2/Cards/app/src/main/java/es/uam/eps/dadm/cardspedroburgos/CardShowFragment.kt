@@ -63,7 +63,6 @@ class CardShowFragment : Fragment() {
         //(activity as MainActivity).hideAddButton()
         super.onCreateView(inflater, container, savedInstanceState)
 
-
         return inflater.inflate(R.layout.fragment_card_show, container, false)
     }
 

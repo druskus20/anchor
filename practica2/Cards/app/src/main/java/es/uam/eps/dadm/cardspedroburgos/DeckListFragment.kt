@@ -27,9 +27,6 @@ class DeckListFragment : Fragment(){
     private lateinit var deckRecyclerView: RecyclerView
     private lateinit var deckAdapter: DeckAdapter
 
-
-
-
     var listener: onDeckListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
@@ -37,7 +34,7 @@ class DeckListFragment : Fragment(){
     }
 
     private val firebaseDecksViewModel by lazy {
-        activity?.let { ViewModelProviders.of(it) }!![FirebaseDecksViewModel::class.java]
+        ViewModelProviders.of(this).get(FirebaseDecksViewModel::class.java)
     }
 
     private val referencePath by lazy {
@@ -223,7 +220,7 @@ class DeckListFragment : Fragment(){
                     // Delete
 
                     //mainViewModel.removeActiveDeck()
-                    databaseReference?.child(deck.id)?.removeValue()
+                    databaseReference.child(deck.id).removeValue()
 
                     deckAdapter.notifyItemChanged(adapterPosition)
                     deckAdapter.notifyItemRangeRemoved(adapterPosition, 1)

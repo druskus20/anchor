@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_card_add.*
 
 
@@ -20,6 +21,16 @@ class CardAddFragment : Fragment() {
     var listener: onCardAddFragmentInteractionListener? = null
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
+    }
+
+    private val referencePath by lazy {
+        val user = activity?.applicationContext?.let { SettingsActivity.getLoggedUser(it) }
+        val deckid = mainViewModel.activeDeck.id
+        "$user/Decks/$deckid"
+    }
+
+    private val databaseReference by lazy {
+        FirebaseDatabase.getInstance().getReference(referencePath)
     }
 
 
@@ -51,6 +62,7 @@ class CardAddFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
         mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.card_add_title)
 
         val questionTextWatcher = object : TextWatcher {
@@ -81,7 +93,11 @@ class CardAddFragment : Fragment() {
                         .setAction("Action", null).show()
                     return@setOnClickListener
                 }
-                mainViewModel.activeDeck.addCard(card)
+                mainViewModel.activeDeck.numCards++
+                databaseReference.child("numCards").setValue(mainViewModel.activeDeck.numCards)
+                databaseReference.child("Cards").child(card.id).setValue(card)
+
+                //mainViewModel.activeDeck.addCard(card)
                 Snackbar.make(it, "TEXTO AÑADIR CARTA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }

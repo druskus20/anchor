@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
 
 
 
+
+
+
     override fun onCardAddNoBackStack() {
         var fragment = CardListFragment.newInstance()
         supportFragmentManager
@@ -137,14 +140,14 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
                 .setAction("Action", null).show()
         }*/
     }
-
+/*
     override fun onPause() {
         super.onPause()
         val fos = openFileOutput(savefile, Context.MODE_PRIVATE)
         mainActivityViewModel.saveData(fos)
 
         fos.close()
-    }
+    }*/
 }
 
 

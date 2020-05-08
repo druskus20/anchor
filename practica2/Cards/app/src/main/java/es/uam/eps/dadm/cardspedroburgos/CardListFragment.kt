@@ -7,13 +7,15 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_card_list.*
-
+import org.joda.time.DateTime
 
 
 class CardListFragment : Fragment() {
@@ -24,13 +26,30 @@ class CardListFragment : Fragment() {
     var listener: onCardListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
-        // !!!!!! Forzado
+
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
+    }
+
+
+    private val firebaseCardsViewModel by lazy {
+        //activity?.let { ViewModelProviders.of(it) }!![FirebaseCardsViewModel::class.java]
+        ViewModelProviders.of(this).get(FirebaseCardsViewModel::class.java)
+    }
+
+    private val referencePath by lazy {
+        val user = activity?.applicationContext?.let { SettingsActivity.getLoggedUser(it) }
+        val deckid = mainViewModel.activeDeck.id
+         "$user/Decks/$deckid"
+    }
+
+    private val databaseReference by lazy {
+        FirebaseDatabase.getInstance().getReference(referencePath)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     // Menu bar
@@ -78,7 +97,19 @@ class CardListFragment : Fragment() {
         cardRecyclerView = view.findViewById(R.id.card_recycler_view) as RecyclerView
         cardRecyclerView.layoutManager = LinearLayoutManager(activity)
         mainViewModel.activeDeck.cards.forEach{ it.expanded = false }
-        updateUI()
+
+
+        val observer =
+            Observer<List<Card>> { t ->
+                if (t != null){
+                    updateUI(t)
+                }
+            }
+        firebaseCardsViewModel.setReference("$referencePath/Cards")
+        firebaseCardsViewModel.cards.observe(this, observer)
+
+        Snackbar.make(view, referencePath, Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show()
 
         return view
     }
@@ -98,6 +129,8 @@ class CardListFragment : Fragment() {
         study_button.setOnClickListener{
             listener?.onBeginStudy()
         }
+
+
     }
 
 
@@ -128,10 +161,13 @@ class CardListFragment : Fragment() {
             ?.commit()
     }
 */
-    private fun updateUI() {
-        cardAdapter = CardAdapter(mainViewModel.activeDeck.cards)
+    private fun updateUI(cards: List<Card>) {
+        cardAdapter = CardAdapter(cards)
         cardRecyclerView.adapter = cardAdapter
     }
+
+
+
 
     companion object {
         fun newInstance(): CardListFragment {
@@ -190,8 +226,12 @@ class CardListFragment : Fragment() {
                 setMessage(getString(R.string.card_delete_question))
                 setPositiveButton(getString(R.string.ok_button)
                 ) { dialog, id ->
-                    mainViewModel.activeDeck.removeCardById(card.id)
+                    databaseReference.child("Cards").child(card.id).removeValue()
                     mainViewModel.activeDeck.numCards--
+
+
+                    databaseReference.child("numCards").setValue(mainViewModel.activeDeck.numCards)
+
                     cardAdapter.notifyItemChanged(adapterPosition)
                     cardAdapter.notifyItemRangeRemoved(adapterPosition, 1)
                     Snackbar.make(view, getString(R.string.card_delete_msg), Snackbar.LENGTH_LONG)
@@ -214,7 +254,7 @@ class CardListFragment : Fragment() {
             questionTextView.text = card.question
             answerTextView.text = card.answer
             dateTextView.text = card.date
-            scoreView.text = card.nextPracticeDate.toLocalDate().toString()
+            scoreView.text = DateTime(card.nextPracticeDate).toLocalDate().toString()
             answerTextView.visibility = if (expanded) View.VISIBLE else View.GONE
             scoreView.visibility = if (expanded) View.VISIBLE else View.GONE
         }
