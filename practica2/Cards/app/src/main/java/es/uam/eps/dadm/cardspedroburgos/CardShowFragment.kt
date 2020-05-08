@@ -1,5 +1,6 @@
 package es.uam.eps.dadm.cardspedroburgos
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ class CardShowFragment : Fragment() {
     private var currentCard = Card("None", "None")
     var listener: CardShowFragment.onCardShowFragmentInteractionListener? = null
     var total_cards = 0
+
     // Specific viewModel for hiding elements
     private val cardShowViewModel: CardShowViewModel by lazy {
         ViewModelProviders.of(this).get(CardShowViewModel::class.java)
@@ -56,9 +58,12 @@ class CardShowFragment : Fragment() {
         }
         max_cards = temp
 
+        // I hate asyncronous calls
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
+                if (cardShowViewModel.init)
+                    return
+                cardShowViewModel.init = true
                 var listOfCards: MutableList<Card> = mutableListOf<Card>()
                 val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
                 for (card in dataSnapshot.children) {
@@ -68,16 +73,22 @@ class CardShowFragment : Fragment() {
                             DateTime(newCard.nextPracticeDate),
                             DateTime.now()
                         )
-
-
                         if ((diff <= 0) && (total_cards < max_cards)) {
-
                             listOfCards.add(newCard)
-                            total_cards++
                         }
                     }
                 }
+
                 cardShowViewModel.studyCardList.addAll(listOfCards)
+                total_cards = cardShowViewModel.studyCardList.size
+                if (total_cards == 0){
+                    view?.let {
+                        Snackbar.make(it, getString(R.string.no_cards_study_msg), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+                    listener?.onEndStudy()
+                }
+               setFirstCard()
             }
             override fun onCancelled(databaseError: DatabaseError) { // ...
             }
@@ -131,15 +142,7 @@ class CardShowFragment : Fragment() {
 
         mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.show_card_title)
         // If there are no more cards to study
-        for (card in cardShowViewModel.studyCardList)
-            Log.d("INSANE", card.toString())
-        if (total_cards == 0){
-            view?.let {
-                Snackbar.make(it, getString(R.string.no_cards_study_msg), Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-            listener?.onEndStudy()
-        }
+
 
         setFirstCard()
 
@@ -160,21 +163,21 @@ class CardShowFragment : Fragment() {
 
         easy_button.setOnClickListener {
             currentCard.quality = Quality.FACIL
-            currentCard.update()
+            firebaseCardUpdate(currentCard)
             // If there are no more cards left
             testEndSession()
             nextCard()
         }
         doubt_button.setOnClickListener {
             currentCard.quality = Quality.DUDO
-            currentCard.update()
+            firebaseCardUpdate(currentCard)
             // If there are no more cards left
             testEndSession()
             nextCard()
         }
         hard_button.setOnClickListener {
             currentCard.quality = Quality.DIFICIL
-            currentCard.update()
+            firebaseCardUpdate(currentCard)
             // If there are no more cards left
             testEndSession()
             nextCard()
@@ -202,6 +205,7 @@ class CardShowFragment : Fragment() {
 
     }
     // Para usar localdatenow
+    @SuppressLint("SetTextI18n")
     private fun nextCard() {
 
         if (cardShowViewModel.end)
@@ -223,10 +227,28 @@ class CardShowFragment : Fragment() {
         card_count.text = getString(R.string.show_card_cards_left) + (cardShowViewModel.currentCardCount) + "/" + cardShowViewModel.studyCardList.size
     }
 
+    // Updates the card info based on the quality received
+    fun firebaseCardUpdate(card : Card){
+        // Temporal copy that we push to the remote
+
+
+        currentCard.update()
+
+        var cardReference = FirebaseDatabase.getInstance().getReference("$referencePath/${currentCard.id}")
+
+        cardReference.child("quality").setValue(currentCard.quality)
+        cardReference.child("easiness").setValue(currentCard.easiness)
+        cardReference.child("repetitions").setValue(currentCard.repetitions)
+        cardReference.child("interval").setValue(currentCard.interval)
+        cardReference.child("nextPracticeDate").setValue(currentCard.nextPracticeDate)
+
+    }
+
     companion object {
         private const val ARG_CARDS_IDS = "card_list"
         fun newInstance(): CardShowFragment {
             return  CardShowFragment()
         }
     }
+
 }

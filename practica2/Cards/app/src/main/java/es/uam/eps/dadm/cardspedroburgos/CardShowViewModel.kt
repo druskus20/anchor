@@ -11,6 +11,7 @@ class CardShowViewModel : ViewModel() {
     var currentCardCount = 0
     var end = false
     var answered = false
+    var init = false
 
 
 
