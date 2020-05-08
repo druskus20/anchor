@@ -17,10 +17,7 @@ open class Card (var question: String = "", var answer: String = "",  val id: St
     var nextPracticeDate: Date = DateTime.now().toDate()
     var quality : Quality = Quality.NO
 
-    var total = 0
-    var total_easy = 0
-    var total_dudo = 0
-    var total_hard = 0
+
 
 
 
@@ -44,13 +41,7 @@ open class Card (var question: String = "", var answer: String = "",  val id: St
     // Updates the card info based on the quality received
     fun update(){
         // Recalculates properties based on quality
-        when (quality) {
-            Quality.FACIL -> total_easy++
-            Quality.DUDO -> total_dudo++
-            Quality.DIFICIL -> total_hard++
-            Quality.NO -> true
-            else -> true
-        }
+
         val q = quality.value
         easiness = max(1.3, easiness + 0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
         // Update repetitions
@@ -65,7 +56,6 @@ open class Card (var question: String = "", var answer: String = "",  val id: St
         val temp = DateTime(nextPracticeDate)
         nextPracticeDate = temp.plusDays(interval).toDate()
 
-        total++
 
     }
 

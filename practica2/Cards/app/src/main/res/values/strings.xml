@@ -95,13 +95,15 @@
     <string name="deck_stats_n_easy_label">Number of easy responses</string>
     <string name="deck_stats_n_hard">Number of hard responses</string>
     <string name="deck_stats_n_hard_label">Number of hard responses</string>
-    <string name="deck_stats_n_normal">Number of normal responses</string>
-    <string name="deck_stats_n_normal_label">Number of normal responses</string>
+    <string name="deck_stats_n_doubt">Number of doubt responses</string>
+    <string name="deck_stats_n_doubt_label">Number of doubt responses</string>
     <string name="register_error">Error, register could not be completed</string>
     <string name="register_success">User registered, login now</string>
     <string name="login_success">"Logged as user: "</string>
     <string name="login_error">Incorrect user or password</string>
     <string name="name_app">Cards</string>
+    <string name="card_stats_label">Stats</string>
+
 
 
 </resources>

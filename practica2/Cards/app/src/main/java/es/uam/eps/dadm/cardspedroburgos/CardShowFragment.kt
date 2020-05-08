@@ -38,11 +38,11 @@ class CardShowFragment : Fragment() {
     private val referencePath by lazy {
         val user = activity?.applicationContext?.let { SettingsActivity.getLoggedUser(it) }
         val deckid = mainViewModel.activeDeck.id
-        "$user/Decks/$deckid/Cards"
+        "$user/Decks/$deckid"
     }
 
     private val databaseReference by lazy {
-        FirebaseDatabase.getInstance().getReference(referencePath)
+        FirebaseDatabase.getInstance().getReference("$referencePath/Cards")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -231,20 +231,24 @@ class CardShowFragment : Fragment() {
     fun firebaseCardUpdate(card : Card){
         // Temporal copy that we push to the remote
 
-
+        var currentDeck = mainViewModel.activeDeck
         currentCard.update()
+        currentDeck.updateDeck(currentCard.quality)
 
-        var cardReference = FirebaseDatabase.getInstance().getReference("$referencePath/${currentCard.id}")
+        var cardReference = FirebaseDatabase.getInstance().getReference("$referencePath/Cards/${currentCard.id}")
+        var deckReference = FirebaseDatabase.getInstance().getReference("$referencePath")
 
         cardReference.child("quality").setValue(currentCard.quality)
         cardReference.child("easiness").setValue(currentCard.easiness)
         cardReference.child("repetitions").setValue(currentCard.repetitions)
         cardReference.child("interval").setValue(currentCard.interval)
-        
-        cardReference.child("total_easy").setValue(currentCard.total_easy)
-        cardReference.child("total_dudo").setValue(currentCard.total_dudo)
-        cardReference.child("total_hard").setValue(currentCard.total_hard)
-        cardReference.child("total").setValue(currentCard.total)
+        cardReference.child("nextPracticeDate").setValue(currentCard.nextPracticeDate)
+
+
+        deckReference.child("total_easy").setValue(currentDeck.total_easy)
+        deckReference.child("total_dudo").setValue(currentDeck.total_dudo)
+        deckReference.child("total_hard").setValue(currentDeck.total_hard)
+        deckReference.child("total").setValue(currentDeck.total)
 
     }
 

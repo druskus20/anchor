@@ -41,29 +41,31 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/easy_responses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deck_stats_n_easy"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/deck_stats_n_normal_label"
+                android:text="@string/deck_stats_n_doubt_label"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/doubt_responses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/deck_stats_n_normal"
+                android:text="@string/deck_stats_n_doubt"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                 />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,12 +76,13 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/hard_responses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deck_stats_n_hard"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                />
 
 
         </LinearLayout>
