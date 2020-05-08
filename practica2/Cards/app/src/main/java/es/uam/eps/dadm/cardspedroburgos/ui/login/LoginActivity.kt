@@ -94,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 val result = firebase_login(username.text.toString(), password.text.toString())
-                Log.d("RESULT", result.toString())
+
             }
             register.setOnClickListener {
                 loading.visibility = View.VISIBLE

@@ -96,7 +96,7 @@ class CardListFragment : Fragment() {
 
         cardRecyclerView = view.findViewById(R.id.card_recycler_view) as RecyclerView
         cardRecyclerView.layoutManager = LinearLayoutManager(activity)
-        mainViewModel.activeDeck.cards.forEach{ it.expanded = false }
+       // mainViewModel.activeDeck.cards.forEach{ it.expanded = false }
 
 
         val observer =
@@ -149,16 +149,7 @@ class CardListFragment : Fragment() {
         fun onDeckStats()
     }
 
-/*
-    private fun addCard() {
-        activity?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.fragment_container, CardAddFragment.newInstance())
-            // ?.addToBackStack("Decks") !!!
-            ?.addToBackStack( "CardAdd" )
-            ?.commit()
-    }
-*/
+
     private fun updateUI(cards: List<Card>) {
         cardAdapter = CardAdapter(cards)
         cardRecyclerView.adapter = cardAdapter

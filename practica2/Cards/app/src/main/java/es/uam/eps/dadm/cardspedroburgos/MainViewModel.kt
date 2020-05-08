@@ -15,47 +15,5 @@ class MainViewModel: ViewModel() {
 
 
 
-/*
-
-    // Saves the app data into a file
-    fun saveData(fos : FileOutputStream) {
-
-        // Makes use of Serializable to store cards to a file
-        try{
-
-            val oos= ObjectOutputStream(fos)
-            oos.writeObject(decks)
-            oos.close()
-
-        } catch(ioe: IOException){
-            println("Error, fichero no accesible o vacio")
-            throw ioe
-        }
-    }
-
-    // Loads the app data from a file
-    fun loadSave(fis: FileInputStream){
-
-        Log.d(this.tag, "LOAD_SAVE")
-
-        // Makes use of Serializable to read cards from a file
-        try {
-            val ois = ObjectInputStream(fis)
-
-            // The following warning is being ignored.
-            //  I could use a cast but that would mean
-            //  dealing with a undefined type ArrayList
-            decks = ois.readObject() as MutableList<Deck>
-            ois.close()
-
-        } catch (ioe: IOException) {
-            println("Error, fichero no accesible o vacio")
-            return
-        } catch (c: ClassNotFoundException) {
-            println("Error, clase no encontrada")
-            return
-        }
-    }
-    */
 
 }

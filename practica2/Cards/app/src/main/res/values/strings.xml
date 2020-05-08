@@ -103,7 +103,11 @@
     <string name="login_error">Incorrect user or password</string>
     <string name="name_app">Cards</string>
     <string name="card_stats_label">Stats</string>
-
+    <string name="label_hard">Hard</string>
+    <string name="label_easy">Easy</string>
+    <string name="label_doubt">Doubt</string>
+    <string name="graph_label">Difficulty</string>
+    <string name="deck_stats_n_cards_label">Total number of cards</string>
 
 
 </resources>

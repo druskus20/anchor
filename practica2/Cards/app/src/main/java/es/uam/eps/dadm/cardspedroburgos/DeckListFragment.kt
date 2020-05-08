@@ -76,30 +76,6 @@ class DeckListFragment : Fragment(){
         return view
     }
 
-/*
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        databaseReference?.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {  }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                var listOfDecks: MutableList<Deck> = mutableListOf<Deck>()
-                for (deck in p0.children) {
-                    var newDeck = deck.getValue(Deck::class.java)
-
-                    if (newDeck != null)
-                        listOfDecks.add(newDeck)
-                }
-                updateUI(listOfDecks)
-                Log.d("FIREBASE", "Lista actualizada")
-            }
-        })
-
-
-    }
-*/
     override fun onStart() {
         super.onStart()
 

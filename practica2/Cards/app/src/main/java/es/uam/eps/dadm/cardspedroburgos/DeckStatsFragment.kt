@@ -1,12 +1,17 @@
 package es.uam.eps.dadm.cardspedroburgos
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -15,7 +20,8 @@ import kotlinx.android.synthetic.main.fragment_deck_stats.*
 
 class DeckStatsFragment : Fragment() {
     private var card = Card(question = "none", answer = "none")
-
+    lateinit var barDataSet : BarDataSet
+    lateinit var barData : BarData
 
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
@@ -50,15 +56,17 @@ class DeckStatsFragment : Fragment() {
 
                     if (d != null) {
                         if (d.id == mainViewModel.activeDeck.id) {
-                            deckStatsViewModel.total_easy = d.total_easy
-                            deckStatsViewModel.total_doubt = d.total_dudo
-                            deckStatsViewModel.total_hard = d.total_hard
-
-                            Log.d("DECKSTATS", d.total_hard.toString())
-                            Log.d("DECKSTATS", d.total_dudo.toString())
-                            Log.d("DECKSTATS", d.total_easy.toString())
-
+                            deckStatsViewModel.totalEasy = d.total_easy
+                            deckStatsViewModel.totalDoubt = d.total_dudo
+                            deckStatsViewModel.totalHard = d.total_hard
+                            deckStatsViewModel.totalCards = d.numCards
                             updateUI()
+                            barDataSet = BarDataSet(getData(), getString(R.string.graph_label))
+                            barDataSet.barBorderWidth = 0.9f
+                            barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+
+                            barData = BarData(barDataSet);
+                            barChart.data = barData;
                             break
                         }
                     }
@@ -86,13 +94,38 @@ class DeckStatsFragment : Fragment() {
         uuid_label_text_view.text = getString(R.string.card_list_title) + ": " +  mainViewModel.activeDeck.name
         mainViewModel.actionbarTitle.value=getString(R.string.app_name) + ": " + getString(R.string.card_stats_label)
 
+
+
+
+
+        var xAxis = barChart.getXAxis();
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+        var classes =  arrayOf(getString(R.string.label_easy),getString(R.string.label_doubt),getString(R.string.label_hard))
+        var formatter = IndexAxisValueFormatter(classes)
+        xAxis.granularity = 1f;
+        xAxis.valueFormatter = formatter
+
+
+        barChart.setFitBars(true)
+        barChart.animateXY(5000, 5000)
+        barChart.invalidate()
+
         updateUI()
     }
 
+    private fun getData(): ArrayList<BarEntry> {
+        val entries: ArrayList<BarEntry> = ArrayList()
+        entries.add(BarEntry(0f, deckStatsViewModel.totalEasy.toFloat()))
+        entries.add(BarEntry(1f, deckStatsViewModel.totalDoubt.toFloat()))
+        entries.add(BarEntry(2f, deckStatsViewModel.totalHard.toFloat()))
+        return entries
+    }
     fun updateUI() {
-        hard_responses.text = deckStatsViewModel.total_hard.toString()
-        easy_responses.text = deckStatsViewModel.total_easy.toString()
-        doubt_responses.text = deckStatsViewModel.total_doubt.toString()
+        hard_responses.text = deckStatsViewModel.totalHard.toString()
+        easy_responses.text = deckStatsViewModel.totalEasy.toString()
+        doubt_responses.text = deckStatsViewModel.totalDoubt.toString()
+        deck_stats_n_cards.text = deckStatsViewModel.totalCards.toString()
     }
     companion object {
         fun newInstance(): DeckStatsFragment {
@@ -100,3 +133,5 @@ class DeckStatsFragment : Fragment() {
         }
     }
 }
+
+

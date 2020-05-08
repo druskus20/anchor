@@ -102,17 +102,7 @@ class CardEditFragment : Fragment() {
 
                 }
                 else {
-                    /*activity?.supportFragmentManager
-                        ?.beginTransaction()
-                        //?.replace(R.id.fragment_container, CardListFragment.newInstance())
-                        // !!! GO BACK IN THE STACK
-                        //?.addToBackStack("CardList")
-
-                        ?.commit()
-
-                     */
-
-                    activity?.supportFragmentManager?.apply {
+                     activity?.supportFragmentManager?.apply {
                         if (this.backStackEntryCount > 0) {
                             this.popBackStack()
                         }

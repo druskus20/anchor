@@ -36,7 +36,9 @@ android {
     }
 
 }
-
+repositories {
+    maven { url "https://jitpack.io" }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -61,7 +63,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:18.0.0'
 
     implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.github.Philjay:MPAndroidChart:v3.1.0'
 
 }
+
 
 apply plugin: 'com.google.gms.google-services'

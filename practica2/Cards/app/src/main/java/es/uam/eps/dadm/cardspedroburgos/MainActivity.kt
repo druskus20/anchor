@@ -24,11 +24,6 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
         //ViewModelProviders.of(this).get(DeckListViewModel::class.java)
     }
 
-
-
-
-
-
     override fun onCardAddNoBackStack() {
         var fragment = CardListFragment.newInstance()
         supportFragmentManager
@@ -98,58 +93,20 @@ class MainActivity : AppCompatActivity(), CardShowFragment.onCardShowFragmentInt
 
         // Else, create a new fragment_container
         if (fragment == null) {
-            fragment = DeckListFragment ()
+            fragment = DeckListFragment()
             supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, fragment)
-                //  ?.addToBackStack( "DeckList" ) do not go back from the first fragment, just exit
-                .commit()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    //  ?.addToBackStack( "DeckList" ) do not go back from the first fragment, just exit
+                    .commit()
         }
 
         // Livedata for the titlebar
         mainActivityViewModel.actionbarTitle.observe(this, Observer {
-            supportActionBar?.title=it
+            supportActionBar?.title = it
         })
-
-
-
-
-        /*
-        Log.d("FIREBASE", "CONEXION")
-        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-        Log.d("FIREBASE", database.toString())
-        val reference = database.getReference("mensaje")
-        Log.d("FIREBASE", reference.toString())
-        Log.d("FIREBASE", reference.child("key").setValue("Hello World").exception.toString())
-        */
-
-        /*
-        var logged = false      // Get it from the login viewmodel
-        var loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
-        */
-
-
-        // OLD: Load data from a file
-        /*try {
-            val fis = openFileInput(savefile)
-            mainActivityViewModel.loadSave(fis)
-            fis.close()
-        }
-        catch (e: FileNotFoundException){
-            val view = findViewById<View>(android.R.id.content)
-            Snackbar.make(view, "No se ha ENCOTNRADO FICHEOR", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
     }
-/*
-    override fun onPause() {
-        super.onPause()
-        val fos = openFileOutput(savefile, Context.MODE_PRIVATE)
-        mainActivityViewModel.saveData(fos)
 
-        fos.close()
-    }*/
 }
 
 
