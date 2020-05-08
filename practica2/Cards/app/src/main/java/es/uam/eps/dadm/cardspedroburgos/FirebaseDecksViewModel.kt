@@ -10,7 +10,7 @@ import com.google.firebase.database.ValueEventListener
 
 class FirebaseDecksViewModel : ViewModel() {
     lateinit var reference_name : String
-    var cards: MutableLiveData<List<Card>> = MutableLiveData()
+    var decks: MutableLiveData<List<Deck>> = MutableLiveData()
         private set
         get() {
             if (field.value == null) {
@@ -18,20 +18,24 @@ class FirebaseDecksViewModel : ViewModel() {
                     .addValueEventListener(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError) {}
                         override fun onDataChange(p0: DataSnapshot) {
-                            var listOfCards: MutableList<Card> = mutableListOf<Card>()
-                            for (card in p0.children) {
-                                var newCard = card.getValue(Card::class.java)
-                                if (newCard != null)
-                                    listOfCards.add(newCard)
+                            var listOfDecks: MutableList<Deck> = mutableListOf()
+                            for (deck in p0.children) {
+                                var newDeck = deck.getValue(Deck::class.java)
+                                if (newDeck != null)
+                                    listOfDecks.add(newDeck)
                             }
-                            field.postValue(listOfCards)
+                            field.postValue(listOfDecks)
                         }
                     })
             }
             return field
         }
 
-    fun setUser(user_reference_name: String) {
+    fun setReference(user_reference_name: String) {
         reference_name = user_reference_name
     }
+
+
+
+
 }

@@ -3,25 +3,49 @@ package es.uam.eps.dadm.cardspedroburgos
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import es.uam.eps.dadm.cardspedroburgos.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_deck_list.*
 
 class DeckListFragment : Fragment(){
     private lateinit var deckRecyclerView: RecyclerView
     private lateinit var deckAdapter: DeckAdapter
+
+
+
+
     var listener: onDeckListFragmentInteractionListener? = null
 
     private val mainViewModel by lazy {
         activity?.let { ViewModelProviders.of(it) }!![MainViewModel::class.java]
+    }
+
+    private val firebaseDecksViewModel by lazy {
+        activity?.let { ViewModelProviders.of(it) }!![FirebaseDecksViewModel::class.java]
+    }
+
+    private val referencePath by lazy {
+        activity?.applicationContext?.let { SettingsActivity.getLoggedUser(it) } + "/Decks"
+    }
+
+    private val databaseReference by lazy {
+        FirebaseDatabase.getInstance().getReference(referencePath)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +66,43 @@ class DeckListFragment : Fragment(){
         deckRecyclerView = view.findViewById(R.id.deck_recycler_view) as RecyclerView
         deckRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        updateUI()
+        val observer =
+            Observer<List<Deck>> { t ->
+                if (t != null){
+                    updateUI(t)
+                }
+            }
+        firebaseDecksViewModel.setReference(referencePath)
+        firebaseDecksViewModel.decks.observe(this, observer)
+
 
         return view
     }
 
+/*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        databaseReference?.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {  }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var listOfDecks: MutableList<Deck> = mutableListOf<Deck>()
+                for (deck in p0.children) {
+                    var newDeck = deck.getValue(Deck::class.java)
+
+                    if (newDeck != null)
+                        listOfDecks.add(newDeck)
+                }
+                updateUI(listOfDecks)
+                Log.d("FIREBASE", "Lista actualizada")
+            }
+        })
+
+
+    }
+*/
     override fun onStart() {
         super.onStart()
 
@@ -72,8 +128,12 @@ class DeckListFragment : Fragment(){
         alert?.setPositiveButton(getString(R.string.ok_button)
         ) { dialog, whichButton ->
             val name = input.text.toString()
-            mainViewModel.addDeck(name)
-            deckAdapter.notifyDataSetChanged()
+
+            val deck = Deck(name)
+            databaseReference?.child(deck.id)?.setValue(deck)
+
+            //deckAdapter.notifyDataSetChanged() MOVED TO EVENTLISTENER
+
             Snackbar.make(view, getString(R.string.deck_add_msg), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
@@ -127,6 +187,7 @@ class DeckListFragment : Fragment(){
         fun onDeckSelected()
     }
 
+
     private inner class DeckHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var deck: Deck
         val nameTextView: TextView = itemView.findViewById(R.id.list_item_deck_title)
@@ -138,19 +199,18 @@ class DeckListFragment : Fragment(){
             itemView.setOnClickListener {
                 mainViewModel.activeDeck = deck
                 listener?.onDeckSelected()
-
             }
 
             // Delete a deck
             itemView.setOnLongClickListener {
-                mainViewModel.activeDeck = deck
-                showDeleteMenu(view)
+
+                showDeleteMenu(view, deck)
 
                 true
             }
         }
 
-        private fun showDeleteMenu(view: View) {
+        private fun showDeleteMenu(view: View, deck : Deck) {
 
             val builder: AlertDialog.Builder? = activity?.let {
                 AlertDialog.Builder(it)
@@ -162,7 +222,9 @@ class DeckListFragment : Fragment(){
                 ) { dialog, id ->
                     // Delete
 
-                    mainViewModel.removeActiveDeck()
+                    //mainViewModel.removeActiveDeck()
+                    databaseReference?.child(deck.id)?.removeValue()
+
                     deckAdapter.notifyItemChanged(adapterPosition)
                     deckAdapter.notifyItemRangeRemoved(adapterPosition, 1)
                     // Show Feedback
@@ -199,8 +261,8 @@ class DeckListFragment : Fragment(){
         }
     }
 
-    private fun updateUI() {
-        deckAdapter = DeckAdapter(mainViewModel.decks)
+    private fun updateUI(decks: List<Deck>) {
+        deckAdapter = DeckAdapter(decks)
         deckRecyclerView.adapter = deckAdapter
     }
 }

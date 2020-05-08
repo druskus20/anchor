@@ -13,19 +13,9 @@ class MainViewModel: ViewModel() {
     lateinit var activeCard : Card
     val actionbarTitle = MutableLiveData<String>()
 
-    fun removeActiveDeck() : Int {
-        val index = decks.indexOf(activeDeck)
-        decks.removeAt(index)
-        return index
-    }
 
 
-    // Adds a new deck to this.decks
-    fun addDeck(name:String) {
-        //val deck: Deck = Deck.readDeck() CLI
-        val newDeck = Deck(name)
-        decks.add(newDeck)
-    }
+
 
     // Saves the app data into a file
     fun saveData(fos : FileOutputStream) {

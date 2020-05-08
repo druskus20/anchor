@@ -3,7 +3,11 @@ package es.uam.eps.dadm.cardspedroburgos
 import java.io.Serializable
 import java.util.*
 
-open class Deck (var name: String, val id: String = UUID.randomUUID().toString()) : Serializable {
+open class Deck (var name: String = "", val id: String = UUID.randomUUID().toString()) : Serializable {
+
+
+
+
     var cards: MutableList<Card> = mutableListOf()
 
     var numCards = 0

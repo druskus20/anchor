@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import es.uam.eps.dadm.cardspedroburgos.Deck
 import es.uam.eps.dadm.cardspedroburgos.MainActivity
 import es.uam.eps.dadm.cardspedroburgos.R
 import es.uam.eps.dadm.cardspedroburgos.SettingsActivity
@@ -142,7 +143,7 @@ class LoginActivity : AppCompatActivity() {
 
                     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
                     val reference = database.getReference(username.replace(".", ",") + "/Decks")
-                    reference.child("Deck").setValue("empty").exception.toString()
+                    reference.child("Deck").setValue(Deck("Long click to edit this deck")).exception.toString()
 
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("LOGIN", "createUserWithEmail:success")
@@ -170,9 +171,7 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         override fun afterTextChanged(editable: Editable?) {
             afterTextChanged.invoke(editable.toString())
         }
-
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
 }
