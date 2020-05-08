@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" />
-<!-- <include layout="@layout/content_main2" /> -->
+    <!-- <include layout="@layout/content_main2" /> -->
 
 
 

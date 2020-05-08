@@ -64,10 +64,10 @@ class CardShowFragment : Fragment() {
                 if (cardShowViewModel.init)
                     return
                 cardShowViewModel.init = true
-                var listOfCards: MutableList<Card> = mutableListOf<Card>()
+                val listOfCards: MutableList<Card> = mutableListOf<Card>()
                 val dateTimeComparator = DateTimeComparator.getDateOnlyInstance()
                 for (card in dataSnapshot.children) {
-                    var newCard = card.getValue(Card::class.java)
+                    val newCard = card.getValue(Card::class.java)
                     if (newCard != null) {
                         val diff = dateTimeComparator.compare(
                             DateTime(newCard.nextPracticeDate),
@@ -218,7 +218,7 @@ class CardShowFragment : Fragment() {
 
         // Reload UI
         answer_button.visibility = View.VISIBLE
-        question_text_view.text = currentCard.question
+        question_text_view. text = currentCard.question
         answer_text_view.text = currentCard.answer
 
         difficulty_buttons.visibility = View.INVISIBLE
@@ -240,7 +240,11 @@ class CardShowFragment : Fragment() {
         cardReference.child("easiness").setValue(currentCard.easiness)
         cardReference.child("repetitions").setValue(currentCard.repetitions)
         cardReference.child("interval").setValue(currentCard.interval)
-        cardReference.child("nextPracticeDate").setValue(currentCard.nextPracticeDate)
+        
+        cardReference.child("total_easy").setValue(currentCard.total_easy)
+        cardReference.child("total_dudo").setValue(currentCard.total_dudo)
+        cardReference.child("total_hard").setValue(currentCard.total_hard)
+        cardReference.child("total").setValue(currentCard.total)
 
     }
 
