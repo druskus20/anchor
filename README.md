@@ -1,6 +1,8 @@
 # Anchor
 An Anki-style memorization app for Android with Firebase integration.
 
+[Showcase Video](https://youtu.be/WgQR8AY6UMk)
+
 ## Showcase
 <p align="center">
 <img width="200px" scr=".github/Screenshot_20220105-184828.jpg">
